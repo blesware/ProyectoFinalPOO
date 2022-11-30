@@ -41,8 +41,11 @@ public class Administrador extends Usuario implements Serializable {
         this.password = password;
     }
 
+    //Metodo toString
     @Override
     public String toString() {
-        return "Administrador{" + "usuario=" + usuario + ", password=" + password + '}';
+        return "Administrador[Usuario: " + usuario + ", Password: " + password + 
+               ", Nombre: " + super.getNombre() + ", Cedula: " + super.getCedula() +
+               ", Telefono" + super.getTelefono() + ", Correo: " + super.getCorreoElectronico() +']';
     }        
 }

@@ -1,6 +1,7 @@
 package frames.admin;
 
 import clases.*;
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 
 /**
@@ -40,6 +41,7 @@ public class AgregarAdmin extends javax.swing.JFrame {
         jTextFieldUsuario = new javax.swing.JTextField();
         jTextFieldPassword = new javax.swing.JTextField();
         jTextFieldConfirmPassword = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(562, 300));
@@ -122,6 +124,14 @@ public class AgregarAdmin extends javax.swing.JFrame {
         jPanelFondo.add(jTextFieldPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 180, -1));
         jPanelFondo.add(jTextFieldConfirmPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 180, -1));
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanelFondo.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 30, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -152,7 +162,7 @@ public class AgregarAdmin extends javax.swing.JFrame {
 
             Frames.LIST_ADMIN.add(admin);
 
-            Frames.escribirBin(Frames.LIST_ADMIN, "src/bin/admin_data.bin");
+            Frames.escribirTxt(Frames.LIST_ADMIN, "src/bin/admin_data.txt");
             
             JOptionPane.showMessageDialog(null, "Administrador agregado correctamente");
             limpiar();
@@ -167,6 +177,17 @@ public class AgregarAdmin extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+                
+        Frames.leerTxtAdmin();
+        
+        for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+            
+            System.out.println(Frames.LIST_ADMIN.get(i).toString());
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     //Metodo para Verificar que todos los datos sean correctos
     private boolean verificarDatos() {
 
@@ -177,8 +198,8 @@ public class AgregarAdmin extends javax.swing.JFrame {
             int arroba = 0;
 
             //Si no son numeros lo que se ingreso salta la exepcion y devuelve false
-//            int cedula = Integer.parseInt(jTextFieldCedula.getText().trim());
-//            int telefono = Integer.parseInt(jTextFieldTelefono.getText().trim());
+            int cedula = Integer.parseInt(jTextFieldCedula.getText().trim());
+            int telefono = Integer.parseInt(jTextFieldTelefono.getText().trim());
 
             //Aca se recorre todo el correo en busca de los "@" y los "."
             for (int i = 0; i < jTextFieldCorreo.getText().trim().length(); i++) {
@@ -211,11 +232,16 @@ public class AgregarAdmin extends javax.swing.JFrame {
                 return false;
             }
 
-        } catch (Exception e) {
-
-            //Exepcion en caso de que no sean numeros la cedula y el telefono
+        } catch (HeadlessException e) {
+            
             JOptionPane.showMessageDialog(null, "Algunos Campos son incorrectos\nverifica los datos y vuelve a intentar");
             return false;
+            
+        } catch (NumberFormatException e) {
+            
+            //Exepcion en caso de que no sean numeros la cedula y el telefono
+            JOptionPane.showMessageDialog(null, "La cedula o telefono no son correctos");
+            return false;            
         }
 
         //Si todo esta bien devuelve true
@@ -271,6 +297,7 @@ public class AgregarAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAgregarAdministrador;
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabelAgregarAdministrador;

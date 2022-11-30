@@ -48,135 +48,153 @@ public class Frames extends JFrame {
     public final static VerUsuarios VER_USUARIO = new VerUsuarios();
 
     //ArrayList en donde se guardan todos los objetos de manera temporal antes de escribirse en el .bin
-    public final static ArrayList<Administrador> LIST_ADMIN = new ArrayList<>();
-    public final static ArrayList<Operador> LIST_OPERADOR = new ArrayList<>();
-    public final static ArrayList<Usuario> LIST_USUARIO = new ArrayList<>();
-    public final static ArrayList<EmpresaTransporte> LIST_EMPRESA_TRANSPORTE = new ArrayList<>();
-    public final static ArrayList<Tiquet> LIST_TIQUETE = new ArrayList<>();
-    public final static ArrayList<Trayecto> LIST_TRAYECTO = new ArrayList<>();
+    public static ArrayList<Administrador> LIST_ADMIN = new ArrayList<>();
+    public static ArrayList<Operador> LIST_OPERADOR = new ArrayList<>();
+    public static ArrayList<Usuario> LIST_USUARIO = new ArrayList<>();
+    public static ArrayList<EmpresaTransporte> LIST_EMPRESA_TRANSPORTE = new ArrayList<>();
+    public static ArrayList<Tiquet> LIST_TIQUETE = new ArrayList<>();
+    public static ArrayList<Trayecto> LIST_TRAYECTO = new ArrayList<>();
 
-    //Metodo para escribir el ArrayList en el archivo .bin
-    public static void escribirBin(ArrayList list, String nombreArchivo) {
+    //Metodo para escribir el ArrayList en el archivo .txt
+    public static void escribirTxt(ArrayList list, String nombreArchivo) {
 
         try {
 
             OutputStream os = new FileOutputStream(nombreArchivo);
             ObjectOutputStream oos = new ObjectOutputStream(os);
 
-            for (int i = 0; i < list.size(); i++) {
-                oos.writeObject(list.get(i));
-            }
-
+            oos.writeObject(list);
+            
             oos.close();
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error escribiendo el archivo,\ncontacte con un administrador");
         }
     }
 
-    //Metodo para leer el .bin
-    public static void leerBinAdmin() {
+    //Metodo para leer admin_data.txt
+    public static void leerTxtAdmin() {
 
         try {
          
-            InputStream is = new FileInputStream("src/bin/admin_data.bin");
-            ObjectInputStream ois = new ObjectInputStream(is);
-            
-            Frames.LIST_ADMIN.clear();                        
-            
-            while (ois.readObject() != null) {
-                
-                Frames.LIST_ADMIN.add((Administrador)ois.readObject());
-                
-            }            
+            InputStream is = new FileInputStream("src/bin/admin_data.txt");
+            ObjectInputStream ois = new ObjectInputStream(is);                                             
+                                        
+            Frames.LIST_ADMIN = (ArrayList<Administrador>) ois.readObject();                        
+                                        
                         
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException e) {
             
             JOptionPane.showMessageDialog(null, "Error al leer .bin");
             
         }                
     }
     
-    //Metodo para leer el .bin
-    public static void leerBinOperador() {
+    //Metodo para leer oper_data.txt
+    public static void leerTxtOperador() {
 
         try {
          
-            InputStream is = new FileInputStream("src/bin/oper_data.bin");
-            ObjectInputStream ois = new ObjectInputStream(is);
+            InputStream is = new FileInputStream("src/bin/oper_data.txt");
+            ObjectInputStream ois = new ObjectInputStream(is);                                             
+                                        
+            Frames.LIST_OPERADOR = (ArrayList<Operador>) ois.readObject();                        
+                                        
+                        
+        } catch (IOException | ClassNotFoundException e) {
             
-            
-            
-            
-        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al leer .bin");
             
         }                
     }
     
-    //Metodo para leer el .bin
-    public static void leerBinUsuario() {
+    //Metodo para leer user_data.txt
+    public static void leerTxtUsuario() {
 
         try {
          
-            InputStream is = new FileInputStream("src/bin/user_data.bin");
-            ObjectInputStream ois = new ObjectInputStream(is);
+            InputStream is = new FileInputStream("src/bin/user_data.txt");
+            ObjectInputStream ois = new ObjectInputStream(is);                                             
+                                        
+            Frames.LIST_USUARIO = (ArrayList<Usuario>) ois.readObject();                        
+                                        
+                        
+        } catch (IOException | ClassNotFoundException e) {
             
+            JOptionPane.showMessageDialog(null, "Error al leer .bin");
             
+        }                
+    }
+
+    //Metodo para leer tiquets_data.txt
+    public static void leerTxtTiquet() {
+
+        try {
+         
+            InputStream is = new FileInputStream("src/bin/tiquets_data.txt");
+            ObjectInputStream ois = new ObjectInputStream(is);                                             
+                                        
+            Frames.LIST_TIQUETE = (ArrayList<Tiquet>) ois.readObject();                        
+                                        
+                        
+        } catch (IOException | ClassNotFoundException e) {
             
-            
-        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al leer .bin");
             
         }                
     }
     
-    //Metodo para leer el .bin
-    public static void leerBinEmpresaTransporte() {
+    //Metodo para leer transport_data.txt
+    public static void leerTxtTransporte() {
 
         try {
          
-            InputStream is = new FileInputStream("src/bin/transport_data.bin");
-            ObjectInputStream ois = new ObjectInputStream(is);
+            InputStream is = new FileInputStream("src/bin/transport_data.txt");
+            ObjectInputStream ois = new ObjectInputStream(is);                                             
+                                        
+            Frames.LIST_EMPRESA_TRANSPORTE = (ArrayList<EmpresaTransporte>) ois.readObject();                        
+                                        
+                        
+        } catch (IOException | ClassNotFoundException e) {
             
-            
-            
-            
-        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al leer .bin");
             
         }                
     }
     
-    //Metodo para leer el .bin
-    public static void leerBinTiquete() {
+    //Metodo para leer trayect_data.txt
+    public static void leerTxtTrayecto() {
 
         try {
          
-            InputStream is = new FileInputStream("src/bin/tiquets_data.bin");
-            ObjectInputStream ois = new ObjectInputStream(is);
+            InputStream is = new FileInputStream("src/bin/trayect_data.txt");
+            ObjectInputStream ois = new ObjectInputStream(is);                                             
+                                        
+            Frames.LIST_TRAYECTO = (ArrayList<Trayecto>) ois.readObject();                        
+                                        
+                        
+        } catch (IOException | ClassNotFoundException e) {
             
-            
-            
-            
-        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al leer .bin");
             
         }                
     }
     
-    //Metodo para leer el .bin
-    public static void leerBinTrayecto() {
-
+    //Metodo para borrar un .txt completo
+    public static void borrarTxt(String nombreArchivo) {
+        
         try {
-         
-            InputStream is = new FileInputStream("src/bin/trayect_data.bin");
-            ObjectInputStream ois = new ObjectInputStream(is);
             
+            BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo));
+            bw.write("");
+            bw.close();
+                        
+        } catch (IOException e) {
             
-            
-            
-        } catch (Exception e) {
-            
-        }                
+            JOptionPane.showConfirmDialog(null, "Error al borrar el Archivo");
+        }                                
     }
-
+    
     //Metodo para mostrar estos Frames en pantalla
     public static void verFrame(JFrame frame) {
 
