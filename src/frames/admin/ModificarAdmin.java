@@ -1,6 +1,8 @@
 package frames.admin;
 
-import clases.Frames;
+import clases.*;
+import java.awt.HeadlessException;
+import javax.swing.*;
 
 /**
  *
@@ -42,6 +44,7 @@ public class ModificarAdmin extends javax.swing.JFrame {
         jTextFieldUsuario = new javax.swing.JTextField();
         jTextFieldPassword = new javax.swing.JTextField();
         jTextFieldConfirmPassword = new javax.swing.JTextField();
+        jButtonLimpiarCampos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(562, 300));
@@ -142,6 +145,17 @@ public class ModificarAdmin extends javax.swing.JFrame {
         jPanelFondo.add(jTextFieldPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 180, -1));
         jPanelFondo.add(jTextFieldConfirmPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 240, 180, -1));
 
+        jButtonLimpiarCampos.setBackground(new java.awt.Color(102, 102, 102));
+        jButtonLimpiarCampos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonLimpiarCampos.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonLimpiarCampos.setText("Limpiar Campos");
+        jButtonLimpiarCampos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLimpiarCamposActionPerformed(evt);
+            }
+        });
+        jPanelFondo.add(jButtonLimpiarCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -159,6 +173,24 @@ public class ModificarAdmin extends javax.swing.JFrame {
     //Boton agregar administrador
     private void jButtonModificarAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarAdministradorActionPerformed
 
+        if (verificarCamposVacios() && verificarDatos()) {
+
+//            String nombre = jTextFieldNombre.getText().trim();
+//            String cedula = jTextFieldCedula.getText().trim();
+//            String telefono = jTextFieldTelefono.getText().trim();
+//            String correo = jTextFieldCorreo.getText().trim();
+//            String user = jTextFieldUsuario.getText().trim();
+//            String pass = jTextFieldPassword.getText().trim();
+//
+//            Administrador admin = new Administrador(nombre, cedula, telefono, correo, user, pass);
+//
+//            Frames.LIST_ADMIN.add(admin);
+//
+//            Frames.escribirTxt(Frames.LIST_ADMIN, "src/bin/admin_data.txt");
+//            
+//            JOptionPane.showMessageDialog(null, "Administrador agregado correctamente");
+            limpiar();
+        }                
     }//GEN-LAST:event_jButtonModificarAdministradorActionPerformed
 
     //Boton Volver
@@ -173,12 +205,166 @@ public class ModificarAdmin extends javax.swing.JFrame {
     private void jButtonBorrarAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarAdministradorActionPerformed
         
     }//GEN-LAST:event_jButtonBorrarAdministradorActionPerformed
+
+    private void jButtonLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarCamposActionPerformed
+        
+        limpiar();
+    }//GEN-LAST:event_jButtonLimpiarCamposActionPerformed
+    
+    //Metodo para llenar el jComboBox
+    public static void llenarComboBox() {
+        
+        //Vacia el ComboBox para que no se dupliquen registros
+        ModificarAdmin.jComboBoxSeleccionarAdministrador.removeAllItems();
+        
+        //Leemos el archivo para poder obtener todos los cambios
+        Frames.leerTxtAdmin();
+        
+        //Llenamos el ComboBox
+        for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {                        
+            
+            ModificarAdmin.jComboBoxSeleccionarAdministrador.addItem("ID: " +
+                    Frames.LIST_ADMIN.get(i).getSerial() +
+                    ", Nombre:" + Frames.LIST_ADMIN.get(i).getNombre());       
+        }        
+    }
+    
+    //Metodo para Verificar que todos los datos sean correctos
+    private boolean verificarDatos() {
+
+        try {
+
+            //Verificacion de que hayan los caracteres necesarios
+            if(jTextFieldNombre.getText().trim().length() < 4) {
+                
+                JOptionPane.showMessageDialog(null, "El nombre minimo debe tener 4 caracteres");
+                return false;
+                
+            } else if(jTextFieldUsuario.getText().trim().length() < 6) {
+                
+                JOptionPane.showMessageDialog(null, "El nombre de usuario debe tener minimo\n6 caracteres");
+                return false;
+                
+            } else if(jTextFieldTelefono.getText().trim().length() != 10) {
+                
+                JOptionPane.showMessageDialog(null, "El numero de telefono no es correcto");
+                return false;
+                
+            } else if(jTextFieldPassword.getText().trim().length() < 6) {
+                
+                JOptionPane.showMessageDialog(null, "La contraseña debe tener minimo\n6 caracteres");
+                return false;                
+            }
+                        
+            //Si no son numeros lo que se ingreso salta la exepcion y devuelve false
+            long cedula = Long.parseLong(jTextFieldCedula.getText().trim());
+            int telefono = Integer.parseInt(jTextFieldTelefono.getText().trim());
+            
+            //Variables que llevaran el conteo de cuantos "@" y "." se consiguen en el correo
+            int punto = 0;
+            int arroba = 0;
+            
+            //Aca se recorre todo el correo en busca de los "@" y los "."
+            for (int i = 0; i < jTextFieldCorreo.getText().trim().length(); i++) {
+
+                if (jTextFieldCorreo.getText().trim().charAt(i) == '.') {
+                    punto++;
+                }
+
+                if (jTextFieldCorreo.getText().trim().charAt(i) == '@') {
+                    arroba++;
+                }
+            }
+
+            //Verificacion de que no hayan mas de 1 o 0 "@´s" y ".´s" en el correo
+            if (punto > 1 || punto == 0) {
+
+                JOptionPane.showMessageDialog(null, "Correo no valido, verifique su correo");
+                return false;
+
+            } else if (arroba > 1 || punto == 0) {
+
+                JOptionPane.showMessageDialog(null, "Correo no valido, verifique su correo");
+                return false;
+            }
+
+            //Verificacion de que la contraseña sea igual en ambos campos
+            if (!jTextFieldPassword.getText().trim().equals(jTextFieldConfirmPassword.getText().trim())) {
+
+                JOptionPane.showMessageDialog(null, "La contraseña no coincide\nvuelva a intentar");
+                return false;
+            }
+
+        } catch (HeadlessException e) {
+            
+            JOptionPane.showMessageDialog(null, "Algunos Campos son incorrectos\nverifica los datos y vuelve a intentar");
+            return false;
+            
+        } catch (NumberFormatException e) {
+            
+            //Exepcion en caso de que no sean numeros la cedula y el telefono
+            JOptionPane.showMessageDialog(null, "La cedula o telefono no son correctos");
+            return false;            
+        }
+
+        //Si todo esta bien devuelve true
+        return true;
+    }
+    
+    //Metodo para Verificar campos vacios
+    private boolean verificarCamposVacios() {
+
+        if (jTextFieldNombre.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldCedula.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldTelefono.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldCorreo.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldUsuario.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldPassword.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldConfirmPassword.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else {
+
+            return true;
+        }
+    }
+
+    //Metodo para Limpiar todos los campos
+    private void limpiar() {                
+        jTextFieldNombre.setText("");
+        jTextFieldCedula.setText("");
+        jTextFieldTelefono.setText("");
+        jTextFieldCorreo.setText("");
+        jTextFieldUsuario.setText("");
+        jTextFieldPassword.setText("");
+        jTextFieldConfirmPassword.setText("");
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBorrarAdministrador;
+    private javax.swing.JButton jButtonLimpiarCampos;
     private javax.swing.JButton jButtonModificarAdministrador;
     private javax.swing.JButton jButtonVolver;
-    private javax.swing.JComboBox<String> jComboBoxSeleccionarAdministrador;
+    public static javax.swing.JComboBox<String> jComboBoxSeleccionarAdministrador;
     private javax.swing.JLabel jLabelCedula;
     private javax.swing.JLabel jLabelConfirmPassword;
     private javax.swing.JLabel jLabelCorreo;

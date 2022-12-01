@@ -25,6 +25,10 @@ public class Operador extends Usuario implements Serializable {
     }
 
     //Getter and Setter    
+    public int getSerial() {
+        return super.getSerial();
+    }
+        
     public String getUsuario() {
         return this.usuario;
     }

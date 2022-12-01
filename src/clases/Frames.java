@@ -80,8 +80,7 @@ public class Frames extends JFrame {
             InputStream is = new FileInputStream("src/bin/admin_data.txt");
             ObjectInputStream ois = new ObjectInputStream(is);                                             
                                         
-            Frames.LIST_ADMIN = (ArrayList<Administrador>) ois.readObject();                        
-                                        
+            Frames.LIST_ADMIN = (ArrayList<Administrador>) ois.readObject();
                         
         } catch (IOException | ClassNotFoundException e) {
             

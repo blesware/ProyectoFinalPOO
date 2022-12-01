@@ -14,7 +14,7 @@ public class Administrador extends Usuario implements Serializable {
     private static final boolean PERMISOS = true;
 
     //Constructor
-    public Administrador(String nombre, String cedula,String telefono, 
+    public Administrador(String nombre, String cedula, String telefono, 
             String correElectronico, String usuario, String password) {
 
         //Llamado al constructor de la Super clase
@@ -24,7 +24,11 @@ public class Administrador extends Usuario implements Serializable {
         this.password = password;
     }
 
-    //Getter and Setter    
+    //Getter and Setter
+    public int getSerial() {
+        return super.getSerial();
+    }
+    
     public String getUsuario() {
         return this.usuario;
     }

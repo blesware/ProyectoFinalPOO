@@ -163,6 +163,7 @@ public class GestionAdministrador extends javax.swing.JFrame {
     private void jButtonModificarAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarAdministradorActionPerformed
 
         this.setVisible(false);
+        ModificarAdmin.llenarComboBox();
         Frames.verFrame(Frames.MODIFICAR_ADMIN);
         
     }//GEN-LAST:event_jButtonModificarAdministradorActionPerformed

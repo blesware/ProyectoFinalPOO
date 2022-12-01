@@ -12,7 +12,7 @@ public class VerAdministrador extends javax.swing.JFrame {
     public VerAdministrador() {
         initComponents();
         setResizable(false);
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
         setTitle("Ver Administradores Registrados");
     }
 
@@ -85,9 +85,14 @@ public class VerAdministrador extends javax.swing.JFrame {
 
         this.setVisible(false);
         Frames.verFrame(Frames.GESTION_ADMIN);
-        
+
     }//GEN-LAST:event_jButtonVolverActionPerformed
-    
+
+    //Metodo para llenar el JTable
+    private void llenarTable() {
+        
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabelTitulo;
