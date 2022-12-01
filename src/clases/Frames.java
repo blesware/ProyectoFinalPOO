@@ -9,7 +9,7 @@ import frames.operator.*;
 import frames.ticket.*;
 import frames.transport.*;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  *
@@ -58,6 +58,8 @@ public class Frames extends JFrame {
     //Metodo para escribir el ArrayList en el archivo .txt
     public static void escribirTxt(ArrayList list, String nombreArchivo) {
 
+        Frames.borrarTxt(nombreArchivo);
+        
         try {
 
             OutputStream os = new FileOutputStream(nombreArchivo);
@@ -81,11 +83,12 @@ public class Frames extends JFrame {
             ObjectInputStream ois = new ObjectInputStream(is);                                             
                                         
             Frames.LIST_ADMIN = (ArrayList<Administrador>) ois.readObject();
+            
+            ois.close();
                         
         } catch (IOException | ClassNotFoundException e) {
             
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo");
-            
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
         }
     }
     
@@ -97,13 +100,13 @@ public class Frames extends JFrame {
             InputStream is = new FileInputStream("src/bin/oper_data.txt");
             ObjectInputStream ois = new ObjectInputStream(is);                                             
                                         
-            Frames.LIST_OPERADOR = (ArrayList<Operador>) ois.readObject();                        
-                                        
-                        
+            Frames.LIST_OPERADOR = (ArrayList<Operador>) ois.readObject();
+            
+            ois.close();
+                                                                
         } catch (IOException | ClassNotFoundException e) {
             
-            JOptionPane.showMessageDialog(null, "Error al leer .bin");
-            
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
         }                
     }
     
@@ -117,11 +120,11 @@ public class Frames extends JFrame {
                                         
             Frames.LIST_USUARIO = (ArrayList<Usuario>) ois.readObject();                        
                                         
+            ois.close();
                         
         } catch (IOException | ClassNotFoundException e) {
             
-            JOptionPane.showMessageDialog(null, "Error al leer .bin");
-            
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
         }                
     }
 
@@ -134,12 +137,12 @@ public class Frames extends JFrame {
             ObjectInputStream ois = new ObjectInputStream(is);                                             
                                         
             Frames.LIST_TIQUETE = (ArrayList<Tiquet>) ois.readObject();                        
-                                        
+                            
+            ois.close();
                         
         } catch (IOException | ClassNotFoundException e) {
             
-            JOptionPane.showMessageDialog(null, "Error al leer .bin");
-            
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
         }                
     }
     
@@ -152,12 +155,12 @@ public class Frames extends JFrame {
             ObjectInputStream ois = new ObjectInputStream(is);                                             
                                         
             Frames.LIST_EMPRESA_TRANSPORTE = (ArrayList<EmpresaTransporte>) ois.readObject();                        
-                                        
+                          
+            ois.close();
                         
         } catch (IOException | ClassNotFoundException e) {
             
-            JOptionPane.showMessageDialog(null, "Error al leer .bin");
-            
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
         }                
     }
     
@@ -171,11 +174,11 @@ public class Frames extends JFrame {
                                         
             Frames.LIST_TRAYECTO = (ArrayList<Trayecto>) ois.readObject();                        
                                         
-                        
+            ois.close();           
+            
         } catch (IOException | ClassNotFoundException e) {
             
-            JOptionPane.showMessageDialog(null, "Error al leer .bin");
-            
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
         }                
     }
     

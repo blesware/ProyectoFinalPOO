@@ -1,7 +1,6 @@
 package run;
 
-import clases.Frames;
-import clases.Serials;
+import clases.*;
 import frames.main.Login;
 
 /**

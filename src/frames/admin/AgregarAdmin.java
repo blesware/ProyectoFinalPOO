@@ -201,7 +201,8 @@ public class AgregarAdmin extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "El nombre de usuario debe tener minimo\n6 caracteres");
                 return false;
                 
-            } else if(jTextFieldTelefono.getText().trim().length() != 10) {
+            } else if(jTextFieldTelefono.getText().trim().length() < 10 && 
+                    jTextFieldTelefono.getText().trim().length() > 10) {
                 
                 JOptionPane.showMessageDialog(null, "El numero de telefono no es correcto");
                 return false;
