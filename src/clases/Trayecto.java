@@ -19,7 +19,9 @@ public class Trayecto implements Serializable {
         
         this.serial = Serials.serialClassTrayect++;
         this.costo = costo;
-        this.lugar = lugar;                
+        this.lugar = lugar;     
+        
+        Serials.escribirSeriales();
     }
     
     //Getter and Setter

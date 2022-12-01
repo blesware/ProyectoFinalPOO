@@ -33,7 +33,7 @@ public class AgregarAdmin extends javax.swing.JFrame {
         jLabelPassword = new javax.swing.JLabel();
         jLabelConfirmPassword = new javax.swing.JLabel();
         jButtonAgregarAdministrador = new javax.swing.JButton();
-        jButtonVolver = new javax.swing.JButton();
+        jButtonLimpiarCampos = new javax.swing.JButton();
         jTextFieldNombre = new javax.swing.JTextField();
         jTextFieldCedula = new javax.swing.JTextField();
         jTextFieldTelefono = new javax.swing.JTextField();
@@ -41,7 +41,7 @@ public class AgregarAdmin extends javax.swing.JFrame {
         jTextFieldUsuario = new javax.swing.JTextField();
         jTextFieldPassword = new javax.swing.JTextField();
         jTextFieldConfirmPassword = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jButtonVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(562, 300));
@@ -106,6 +106,24 @@ public class AgregarAdmin extends javax.swing.JFrame {
         });
         jPanelFondo.add(jButtonAgregarAdministrador, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, 140, 140));
 
+        jButtonLimpiarCampos.setBackground(new java.awt.Color(102, 102, 102));
+        jButtonLimpiarCampos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonLimpiarCampos.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonLimpiarCampos.setText("Limpiar Campos");
+        jButtonLimpiarCampos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLimpiarCamposActionPerformed(evt);
+            }
+        });
+        jPanelFondo.add(jButtonLimpiarCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 250, -1, -1));
+        jPanelFondo.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 180, -1));
+        jPanelFondo.add(jTextFieldCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 180, -1));
+        jPanelFondo.add(jTextFieldTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 180, -1));
+        jPanelFondo.add(jTextFieldCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 180, -1));
+        jPanelFondo.add(jTextFieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, 180, -1));
+        jPanelFondo.add(jTextFieldPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 180, -1));
+        jPanelFondo.add(jTextFieldConfirmPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 180, -1));
+
         jButtonVolver.setBackground(new java.awt.Color(102, 102, 102));
         jButtonVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonVolver.setForeground(new java.awt.Color(255, 255, 255));
@@ -116,21 +134,6 @@ public class AgregarAdmin extends javax.swing.JFrame {
             }
         });
         jPanelFondo.add(jButtonVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-        jPanelFondo.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 180, -1));
-        jPanelFondo.add(jTextFieldCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 180, -1));
-        jPanelFondo.add(jTextFieldTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 180, -1));
-        jPanelFondo.add(jTextFieldCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 180, -1));
-        jPanelFondo.add(jTextFieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, 180, -1));
-        jPanelFondo.add(jTextFieldPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 180, -1));
-        jPanelFondo.add(jTextFieldConfirmPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 180, -1));
-
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanelFondo.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 30, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -169,38 +172,54 @@ public class AgregarAdmin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonAgregarAdministradorActionPerformed
 
+    //Boton limpiar campos
+    private void jButtonLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarCamposActionPerformed
+
+        limpiar();
+    }//GEN-LAST:event_jButtonLimpiarCamposActionPerformed
+    
     //Boton Volver
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
-
+        
         this.setVisible(false);
-        Frames.verFrame(Frames.GESTION_ADMIN);
-
+        Frames.verFrame(Frames.GESTION_ADMIN);        
     }//GEN-LAST:event_jButtonVolverActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                
-        Frames.leerTxtAdmin();
-        
-        for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
-            
-            System.out.println(Frames.LIST_ADMIN.get(i).toString());
-        }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     //Metodo para Verificar que todos los datos sean correctos
     private boolean verificarDatos() {
 
         try {
 
-            //Variables que llevaran el conteo de cuantos "@" y "." se consiguen en el correo
-            int punto = 0;
-            int arroba = 0;
-
+            //Verificacion de que hayan los caracteres necesarios
+            if(jTextFieldNombre.getText().trim().length() < 4) {
+                
+                JOptionPane.showMessageDialog(null, "El nombre minimo debe tener 4 caracteres");
+                return false;
+                
+            } else if(jTextFieldUsuario.getText().trim().length() < 6) {
+                
+                JOptionPane.showMessageDialog(null, "El nombre de usuario debe tener minimo\n6 caracteres");
+                return false;
+                
+            } else if(jTextFieldTelefono.getText().trim().length() != 10) {
+                
+                JOptionPane.showMessageDialog(null, "El numero de telefono no es correcto");
+                return false;
+                
+            } else if(jTextFieldPassword.getText().trim().length() < 6) {
+                
+                JOptionPane.showMessageDialog(null, "La contraseña debe tener minimo\n6 caracteres");
+                return false;                
+            }
+                        
             //Si no son numeros lo que se ingreso salta la exepcion y devuelve false
             int cedula = Integer.parseInt(jTextFieldCedula.getText().trim());
             int telefono = Integer.parseInt(jTextFieldTelefono.getText().trim());
-
+            
+            //Variables que llevaran el conteo de cuantos "@" y "." se consiguen en el correo
+            int punto = 0;
+            int arroba = 0;
+            
             //Aca se recorre todo el correo en busca de los "@" y los "."
             for (int i = 0; i < jTextFieldCorreo.getText().trim().length(); i++) {
 
@@ -297,8 +316,8 @@ public class AgregarAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAgregarAdministrador;
+    private javax.swing.JButton jButtonLimpiarCampos;
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabelAgregarAdministrador;
     private javax.swing.JLabel jLabelCedula;

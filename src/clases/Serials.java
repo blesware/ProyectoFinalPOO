@@ -9,6 +9,13 @@ import javax.swing.*;
  */
 public class Serials implements Serializable {
 
+    /*
+        Desde esta clase se manejan todos los seriales de los objetos que llevan
+        un ID, se cargan en un objeto en el TXT y se lee y escribe cada que
+        sea necesario
+    */
+    
+    
     public static int serialClassUser = 1000;    
     public static int serialClassTranport = 1000;
     public static int serialClassTrayect = 1000;
@@ -18,16 +25,37 @@ public class Serials implements Serializable {
         
     }
     
+    //Metodo para leer los seriales
     public static void leerSeriales() {
                 
+        Serials seriales;
         
-        
-        
+        try {
+         
+            InputStream is = new FileInputStream("src/bin/serials_data.txt");
+            ObjectInputStream ois = new ObjectInputStream(is);                                             
+                                        
+            seriales = (Serials) ois.readObject();
+            
+            Serials.setSerialClassUser(seriales.getSerialClassUser());
+            Serials.setSerialClassTiquet(seriales.getSerialClassTiquet());
+            Serials.setSerialClassTranport(seriales.getSerialClassTranport());
+            Serials.setSerialClassTrayect(seriales.getSerialClassTrayect());
+                                        
+                        
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, "ERROR CRITICO ESCRIBIENDO SERIALES\nCONTACTE CON UN ADMINISTRADOR");
+            
+        }                
     }
     
+    //Metodo para escribir los seriales 
     public static void escribirSeriales() {
         
         Serials seriales = new Serials();
+        
+        Frames.borrarTxt("src/bin/serials_data.txt");        
         
         try {
 
@@ -39,7 +67,7 @@ public class Serials implements Serializable {
             oos.close();
 
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error escribiendo el archivo,\ncontacte con un administrador");
+            JOptionPane.showMessageDialog(null, "ERROR CRITICO ESCRIBIENDO SERIALES\nCONTACTE CON UN ADMINISTRADOR");
         }        
     }
 

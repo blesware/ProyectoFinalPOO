@@ -22,7 +22,9 @@ public class Usuario implements Serializable{
         this.nombre = nombre;
         this.cedula = cedula;
         this.correoElectronico = correElectronico;
-        this.telefono = telefono;                
+        this.telefono = telefono;
+        
+        Serials.escribirSeriales();
     }
     
     //Getter and Setter

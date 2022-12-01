@@ -28,6 +28,8 @@ public class Tiquet implements Serializable {
         this.trayecto = trayecto;
         this.destino = destino;
         this.pago = pago;
+        
+        Serials.escribirSeriales();
 
         //Obtener la fecha actual del Computador
         Calendar c = Calendar.getInstance();

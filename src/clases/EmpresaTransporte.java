@@ -7,29 +7,31 @@ import java.io.Serializable;
  * @author juanf
  */
 public class EmpresaTransporte implements Serializable {
-    
+
     //Atributos de la clase
     private final int serial;
     private String nombre;
     private String direccion;
     private String telefono;
     private String correoElectronico;
-    
+
     //Constructor
     public EmpresaTransporte(String nombre, String direccion, String telefono, String correoElectronico) {
-        
+
         this.serial = Serials.serialClassTranport++;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
-        this.correoElectronico = correoElectronico;        
+        this.correoElectronico = correoElectronico;
+
+        Serials.escribirSeriales();
     }
-    
+
     //Getter and Setter
     public int getSerial() {
         return this.serial;
     }
-    
+
     public String getNombre() {
         return this.nombre;
     }
@@ -60,5 +62,5 @@ public class EmpresaTransporte implements Serializable {
 
     public void setCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
-    }    
+    }
 }
