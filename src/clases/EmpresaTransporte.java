@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class EmpresaTransporte implements Serializable {
     
     //Atributos de la clase
+    private final int serial;
     private String nombre;
     private String direccion;
     private String telefono;
@@ -17,6 +18,7 @@ public class EmpresaTransporte implements Serializable {
     //Constructor
     public EmpresaTransporte(String nombre, String direccion, String telefono, String correoElectronico) {
         
+        this.serial = Serials.serialClassTranport++;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -24,6 +26,10 @@ public class EmpresaTransporte implements Serializable {
     }
     
     //Getter and Setter
+    public int getSerial() {
+        return this.serial;
+    }
+    
     public String getNombre() {
         return this.nombre;
     }

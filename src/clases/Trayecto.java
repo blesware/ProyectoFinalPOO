@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class Trayecto implements Serializable {
 
     //Atributos de clase
+    private final int serial;
     private double costo;
     private String lugar;
     private EmpresaTransporte empresa;
@@ -16,11 +17,16 @@ public class Trayecto implements Serializable {
     //Constructor
     public Trayecto(String lugar, double costo) {
         
+        this.serial = Serials.serialClassTrayect++;
         this.costo = costo;
         this.lugar = lugar;                
     }
     
     //Getter and Setter
+    public int getSerial() {
+        return this.serial;
+    }
+    
     public double getCosto() {
         return costo;
     }

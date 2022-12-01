@@ -8,12 +8,9 @@ import java.util.Calendar;
  * @author juanf
  */
 public class Tiquet implements Serializable {
-    
-    //ID de los tiquetes
-    private static int serialClass = 1000;
-
+       
     //Atributos del Tiquete
-    private int serial;
+    private final int serial;
     private String user;
     private String cedula;
     private String fechaCompra;
@@ -25,7 +22,7 @@ public class Tiquet implements Serializable {
     public Tiquet(String user, String cedula, String trayecto,
             String destino, String pago) {
 
-        this.serial = Tiquet.serialClass++;
+        this.serial = Serials.serialClassTiquet++;
         this.user = user;
         this.cedula = cedula;
         this.trayecto = trayecto;

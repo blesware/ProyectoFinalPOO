@@ -1,6 +1,7 @@
 package run;
 
 import clases.Frames;
+import clases.Serials;
 import frames.main.Login;
 
 /**
@@ -31,6 +32,7 @@ public class Main {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                Serials.escribirSeriales();
                 Frames.verFrame(Frames.LOGIN);
             }
         });

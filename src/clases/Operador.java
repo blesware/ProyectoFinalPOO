@@ -44,7 +44,7 @@ public class Operador extends Usuario implements Serializable {
     //Metodo toString
     @Override
     public String toString() {
-        return "Administrador[Usuario: " + usuario + ", Password: " + password + 
+        return "Operador[ID: " + super.getSerial() + ", Usuario: " + usuario + ", Password: " + password + 
                ", Nombre: " + super.getNombre() + ", Cedula: " + super.getCedula() +
                ", Telefono" + super.getTelefono() + ", Correo: " + super.getCorreoElectronico() +']';
     }

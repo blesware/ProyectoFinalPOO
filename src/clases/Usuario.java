@@ -7,14 +7,9 @@ import java.io.Serializable;
  * @author juanf
  */
 public class Usuario implements Serializable{
-    
-    //ID de los tiquetes
-    private static int serialClass = 1000;
-
-    //Atributos del Tiquete
-    private int serial;
-    
+                
     //Atributos de la clase
+    private final int serial;
     private String nombre;
     private String cedula;
     private String correoElectronico;
@@ -23,14 +18,18 @@ public class Usuario implements Serializable{
     //Constructor
     public Usuario(String nombre, String cedula, String telefono, String correElectronico) {
         
-        this.serial = serialClass++;
+        this.serial = Serials.serialClassUser++;
         this.nombre = nombre;
         this.cedula = cedula;
         this.correoElectronico = correElectronico;
         this.telefono = telefono;                
     }
     
-    //Getter and Setter    
+    //Getter and Setter
+    public int getSerial() {
+        return this.serial;
+    }
+    
     public String getNombre() {
         return this.nombre;
     }
@@ -66,7 +65,7 @@ public class Usuario implements Serializable{
     //Metodo toString
     @Override
     public String toString() {
-        return "Usuario[Nombre: " + nombre + ", Cedula: " + cedula +
+        return "Usuario[ID: " + serial + ", Nombre: " + nombre + ", Cedula: " + cedula +
                ", Telefono" + telefono + ", Correo: " + correoElectronico +']';
     }
 }
