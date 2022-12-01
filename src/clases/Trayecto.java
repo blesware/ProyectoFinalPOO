@@ -17,7 +17,7 @@ public class Trayecto implements Serializable {
     //Constructor
     public Trayecto(String lugar, double costo) {
         
-        this.serial = Serials.serialClassTrayect++;
+        this.serial = Serials.array[2]++;
         this.costo = costo;
         this.lugar = lugar;     
         

@@ -32,7 +32,7 @@ public class Main {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Serials.leerSeriales();
+                Serials.iniciarSeriales();
                 Frames.verFrame(Frames.LOGIN);
             }
         });

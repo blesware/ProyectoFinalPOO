@@ -18,7 +18,7 @@ public class Usuario implements Serializable{
     //Constructor
     public Usuario(String nombre, String cedula, String telefono, String correElectronico) {
         
-        this.serial = Serials.serialClassUser++;
+        this.serial = Serials.array[0]++;
         this.nombre = nombre;
         this.cedula = cedula;
         this.correoElectronico = correElectronico;

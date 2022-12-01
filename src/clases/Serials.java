@@ -15,45 +15,66 @@ public class Serials implements Serializable {
         sea necesario
     */
     
-    
-    public static int serialClassUser = 1000;    
-    public static int serialClassTranport = 1000;
-    public static int serialClassTrayect = 1000;
-    public static int serialClassTiquet = 1000;
+    public static int array [] = {1000, 1000, 1000, 1000};   
+        
+    /*
+        Los indicices son los siguientes
+        array[0] es el serial de los Usuarios
+        array[1] es el serial de los Transportes
+        array[2] es el serial de los Trayectos
+        array[3] es el serial de los Tiquetes
+    */
     
     public Serials() {
         
     }
     
-    //Metodo para leer los seriales
-    public static void leerSeriales() {
+    //Inicializar los seriales
+    public static void iniciarSeriales() {
+        
+        try {
+            
+            BufferedReader br = new BufferedReader(new FileReader("src/bin/serials_data.txt"));
+                        
+            if(br.readLine() == null) {
                 
-        Serials seriales;
+                Serials.array[0] = 1000;
+                Serials.array[1] = 1000;
+                Serials.array[2] = 1000;
+                Serials.array[3] = 1000;
+                
+            } else {
+                
+                Serials.leerSeriales();
+                
+            }            
+                        
+        } catch (IOException e) {
+            
+            JOptionPane.showConfirmDialog(null, "ERROR AL INICIALIZAR LOS SERIALES,\nCONTACTE CON UN ADMINISTRADOR");
+        }        
+    }
+    
+    //Metodo para leer los seriales
+    public static void leerSeriales() {                        
         
         try {
          
             InputStream is = new FileInputStream("src/bin/serials_data.txt");
             ObjectInputStream ois = new ObjectInputStream(is);                                             
                                         
-            seriales = (Serials) ois.readObject();
+            Serials.array = (int []) ois.readObject();
             
-            Serials.setSerialClassUser(seriales.getSerialClassUser());
-            Serials.setSerialClassTiquet(seriales.getSerialClassTiquet());
-            Serials.setSerialClassTranport(seriales.getSerialClassTranport());
-            Serials.setSerialClassTrayect(seriales.getSerialClassTrayect());
-                                        
+            ois.close();
                         
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException e) {
             
-            JOptionPane.showMessageDialog(null, "ERROR CRITICO ESCRIBIENDO SERIALES\nCONTACTE CON UN ADMINISTRADOR");
-            
+            JOptionPane.showMessageDialog(null, "ERROR CRITICO LEYENDO SERIALES\nCONTACTE CON UN ADMINISTRADOR");            
         }                
     }
     
     //Metodo para escribir los seriales 
-    public static void escribirSeriales() {
-        
-        Serials seriales = new Serials();
+    public static void escribirSeriales() {                
         
         Frames.borrarTxt("src/bin/serials_data.txt");        
         
@@ -62,7 +83,7 @@ public class Serials implements Serializable {
             OutputStream os = new FileOutputStream("src/bin/serials_data.txt");
             ObjectOutputStream oos = new ObjectOutputStream(os);
 
-            oos.writeObject(seriales);
+            oos.writeObject(Serials.array);
             
             oos.close();
 
@@ -73,34 +94,18 @@ public class Serials implements Serializable {
 
     //Getters and Setters
     public static int getSerialClassUser() {
-        return serialClassUser;
-    }
-
-    public static void setSerialClassUser(int serialClassUser) {
-        Serials.serialClassUser = serialClassUser;
-    }
+        return Serials.array[0];
+    }   
 
     public static int getSerialClassTranport() {
-        return serialClassTranport;
-    }
-
-    public static void setSerialClassTranport(int serialClassTranport) {
-        Serials.serialClassTranport = serialClassTranport;
+        return Serials.array[1];
     }
 
     public static int getSerialClassTrayect() {
-        return serialClassTrayect;
-    }
-
-    public static void setSerialClassTrayect(int serialClassTrayect) {
-        Serials.serialClassTrayect = serialClassTrayect;
+        return Serials.array[2];
     }
 
     public static int getSerialClassTiquet() {
-        return serialClassTiquet;
-    }
-
-    public static void setSerialClassTiquet(int serialClassTiquet) {
-        Serials.serialClassTiquet = serialClassTiquet;
+        return Serials.array[3];
     }        
 }

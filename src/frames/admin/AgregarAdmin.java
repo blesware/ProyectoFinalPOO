@@ -213,7 +213,7 @@ public class AgregarAdmin extends javax.swing.JFrame {
             }
                         
             //Si no son numeros lo que se ingreso salta la exepcion y devuelve false
-            int cedula = Integer.parseInt(jTextFieldCedula.getText().trim());
+            long cedula = Long.parseLong(jTextFieldCedula.getText().trim());
             int telefono = Integer.parseInt(jTextFieldTelefono.getText().trim());
             
             //Variables que llevaran el conteo de cuantos "@" y "." se consiguen en el correo

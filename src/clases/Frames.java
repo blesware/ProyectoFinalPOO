@@ -84,9 +84,9 @@ public class Frames extends JFrame {
                         
         } catch (IOException | ClassNotFoundException e) {
             
-            JOptionPane.showMessageDialog(null, "Error al leer .bin");
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo");
             
-        }                
+        }
     }
     
     //Metodo para leer oper_data.txt

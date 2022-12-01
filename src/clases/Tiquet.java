@@ -22,7 +22,7 @@ public class Tiquet implements Serializable {
     public Tiquet(String user, String cedula, String trayecto,
             String destino, String pago) {
 
-        this.serial = Serials.serialClassTiquet++;
+        this.serial = Serials.array[3]++;
         this.user = user;
         this.cedula = cedula;
         this.trayecto = trayecto;

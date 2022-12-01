@@ -2,6 +2,9 @@ package frames.admin;
 
 import clases.*;
 import java.awt.HeadlessException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.*;
 
 /**
@@ -217,9 +220,25 @@ public class ModificarAdmin extends javax.swing.JFrame {
         //Vacia el ComboBox para que no se dupliquen registros
         ModificarAdmin.jComboBoxSeleccionarAdministrador.removeAllItems();
         
-        //Leemos el archivo para poder obtener todos los cambios
-        Frames.leerTxtAdmin();
-        
+                
+        try {
+            
+            BufferedReader br = new BufferedReader(new FileReader("src/bin/admin_data.txt"));
+                        
+            if(br.readLine() == null) {                                               
+                
+            } else {
+                 
+                //Leemos el archivo para poder obtener todos los cambios
+                Frames.leerTxtAdmin();
+                
+            }            
+                        
+        } catch (IOException e) {
+            
+            JOptionPane.showConfirmDialog(null, "ERROR AL INICIALIZAR LOS SERIALES,\nCONTACTE CON UN ADMINISTRADOR");
+        }      
+                        
         //Llenamos el ComboBox
         for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {                        
             

@@ -18,7 +18,7 @@ public class EmpresaTransporte implements Serializable {
     //Constructor
     public EmpresaTransporte(String nombre, String direccion, String telefono, String correoElectronico) {
 
-        this.serial = Serials.serialClassTranport++;
+        this.serial = Serials.array[1]++;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
