@@ -183,7 +183,7 @@ public class ModificarAdmin extends javax.swing.JFrame {
                 String itemSeleccionado = (String) this.jComboBoxSeleccionarAdministrador.getSelectedItem();
 
                 //Aca obtenemos el ID del Administrador
-                itemSeleccionado = itemSeleccionado.substring(3, 7);
+                itemSeleccionado = itemSeleccionado.substring(3, 7);               
 
                 int indice = -1;
 
@@ -227,7 +227,7 @@ public class ModificarAdmin extends javax.swing.JFrame {
 
         int opt = JOptionPane.showConfirmDialog(null, "¿Realmente desea borrar el Administrador?\nEsta accion no es reversible",
                 "Confirmar accion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        
+
         if (opt == 0) {
 
             if (jComboBoxSeleccionarAdministrador != null) {
@@ -235,13 +235,13 @@ public class ModificarAdmin extends javax.swing.JFrame {
                 String itemSeleccionado = (String) this.jComboBoxSeleccionarAdministrador.getSelectedItem();
 
                 //Aca obtenemos el ID del Administrador
-                itemSeleccionado = itemSeleccionado.substring(3, 7);
+                int ID = Integer.parseInt(itemSeleccionado.substring(3, 7));
 
                 int indice = -1;
 
                 for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
 
-                    if (Frames.LIST_ADMIN.get(i).getSerial() == Integer.parseInt(itemSeleccionado)) {
+                    if (Frames.LIST_ADMIN.get(i).getSerial() == ID) {
                         indice = i;
                         break;
                     }
@@ -305,24 +305,47 @@ public class ModificarAdmin extends javax.swing.JFrame {
 
         try {
 
-            String user = jTextFieldUsuario.getText().trim();
+            String itemSeleccionado = (String) this.jComboBoxSeleccionarAdministrador.getSelectedItem();
 
+            String user = jTextFieldUsuario.getText().trim();
+            
+            //Obtencion del Usuario actual
+            String userActual = itemSeleccionado.substring(16, itemSeleccionado.length());
+
+            System.out.println(userActual);
+            
             Frames.leerTxtAdmin();
             Frames.leerTxtOperador();
 
+            //Recorremos todos los admin en busca del mismo nombre de usuario
             for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
 
                 if (user.equals(Frames.LIST_ADMIN.get(i).getUsuario())) {
-                    JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
-                    return false;
+
+                    //Verificacion para ver si el nombre de usuario es el mismo que ya tiene actual el administrador
+                    if (user.equals(userActual)) {
+                        break;
+                    } else {
+
+                        JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
+                        return false;
+                    }
                 }
             }
 
+            //Recorremos todos los operadores en busca del mismo nombre de usuario
             for (int i = 0; i < Frames.LIST_OPERADOR.size(); i++) {
 
                 if (user.equals(Frames.LIST_OPERADOR.get(i).getUsuario())) {
-                    JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
-                    return false;
+
+                    //Verificacion para ver si el nombre de usuario es el mismo que ya tiene actual el administrador
+                    if (user.equals(userActual)) {
+                        break;
+                    } else {
+                        
+                        JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
+                        return false;
+                    }
                 }
             }
 

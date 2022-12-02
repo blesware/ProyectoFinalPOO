@@ -1,6 +1,9 @@
 package frames.admin;
 
 import clases.Frames;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -8,12 +11,31 @@ import clases.Frames;
  */
 public class VerAdministrador extends javax.swing.JFrame {
 
+    private static DefaultTableModel modelo = new DefaultTableModel(){
+        
+        //Aca sobreescribimos el metodo isCellEditable para que ninguna columna ni fila sea editable
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }    
+    };    
+    
     //Constructor
     public VerAdministrador() {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
         setTitle("Ver Administradores Registrados");
+        
+        this.modelo.addColumn("ID");
+        this.modelo.addColumn("Nombre");
+        this.modelo.addColumn("Cedula");
+        this.modelo.addColumn("Telefono");
+        this.modelo.addColumn("Correo");
+        this.modelo.addColumn("Usuario");
+        this.modelo.addColumn("Contraseña");
+        
+        jTableAdministrador.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -64,7 +86,7 @@ public class VerAdministrador extends javax.swing.JFrame {
         ));
         jScrollPane.setViewportView(jTableAdministrador);
 
-        jPanelFondo.add(jScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 70, -1, 300));
+        jPanelFondo.add(jScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 70, 540, 300));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,8 +111,50 @@ public class VerAdministrador extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     //Metodo para llenar el JTable
-    private void llenarTable() {
+    public static void llenarTable() {
         
+        limpiarTable();        
+        Frames.leerTxtAdmin();
+        
+        ArrayList<String []> listTable = new ArrayList<String []>();
+        
+        //Llenamos el ArrayList temporal que llenara el JTable
+        for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+            
+            String aux [] = new String[] {String.valueOf(Frames.LIST_ADMIN.get(i).getSerial()), 
+                    Frames.LIST_ADMIN.get(i).getNombre(), 
+                    Frames.LIST_ADMIN.get(i).getCedula(), 
+                    Frames.LIST_ADMIN.get(i).getTelefono(), 
+                    Frames.LIST_ADMIN.get(i).getCorreoElectronico(), 
+                    Frames.LIST_ADMIN.get(i).getUsuario(), 
+                    Frames.LIST_ADMIN.get(i).getPassword()};
+
+            listTable.add(aux);
+        }
+        
+        //Llenamos el JTable
+        for (int i = 0; i < listTable.size(); i++) {
+            
+            modelo.addRow(listTable.get(i));
+            
+        }        
+    }
+    
+    //Metodo para limpiar las filas del JTable
+    public static void limpiarTable() {
+        
+        try {
+            
+            int filas = jTableAdministrador.getRowCount();
+            
+            for (int i = 0;filas>i; i++) {
+                modelo.removeRow(0);
+            }
+            
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -98,6 +162,6 @@ public class VerAdministrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTitulo;
     private javax.swing.JPanel jPanelFondo;
     private javax.swing.JScrollPane jScrollPane;
-    private javax.swing.JTable jTableAdministrador;
+    private static javax.swing.JTable jTableAdministrador;
     // End of variables declaration//GEN-END:variables
 }

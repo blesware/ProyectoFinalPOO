@@ -137,8 +137,9 @@ public class GestionAdministrador extends javax.swing.JFrame {
 
     //Boton ver administradores
     private void jButtonVerAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerAdministradorActionPerformed
-
+        
         this.setVisible(false);
+        VerAdministrador.llenarTable();
         Frames.verFrame(Frames.VER_ADMIN);
         
     }//GEN-LAST:event_jButtonVerAdministradorActionPerformed
