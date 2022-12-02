@@ -17,7 +17,7 @@ public class ModificarAdmin extends javax.swing.JFrame {
     public ModificarAdmin() {
         initComponents();
         setResizable(false);
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
         setTitle("Modificar Administrador");
     }
 
@@ -173,27 +173,46 @@ public class ModificarAdmin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Boton agregar administrador
+    //Boton modificar administrador
     private void jButtonModificarAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarAdministradorActionPerformed
 
-        if (verificarCamposVacios() && verificarDatos()) {
+        if (verificarCamposVacios() && verificarDatos() && verificarNombreUsuario()) {
 
-//            String nombre = jTextFieldNombre.getText().trim();
-//            String cedula = jTextFieldCedula.getText().trim();
-//            String telefono = jTextFieldTelefono.getText().trim();
-//            String correo = jTextFieldCorreo.getText().trim();
-//            String user = jTextFieldUsuario.getText().trim();
-//            String pass = jTextFieldPassword.getText().trim();
-//
-//            Administrador admin = new Administrador(nombre, cedula, telefono, correo, user, pass);
-//
-//            Frames.LIST_ADMIN.add(admin);
-//
-//            Frames.escribirTxt(Frames.LIST_ADMIN, "src/bin/admin_data.txt");
-//            
-//            JOptionPane.showMessageDialog(null, "Administrador agregado correctamente");
-            limpiar();
-        }                
+            if (jComboBoxSeleccionarAdministrador != null) {
+
+                String itemSeleccionado = (String) this.jComboBoxSeleccionarAdministrador.getSelectedItem();
+
+                //Aca obtenemos el ID del Administrador
+                itemSeleccionado = itemSeleccionado.substring(3, 7);
+
+                int indice = -1;
+
+                for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+
+                    if (Frames.LIST_ADMIN.get(i).getSerial() == Integer.parseInt(itemSeleccionado)) {
+                        indice = i;
+                        break;
+                    }
+                }
+
+                Frames.LIST_ADMIN.get(indice).setNombre(jTextFieldNombre.getText().trim());
+                Frames.LIST_ADMIN.get(indice).setCedula(jTextFieldCedula.getText().trim());
+                Frames.LIST_ADMIN.get(indice).setTelefono(jTextFieldTelefono.getText().trim());
+                Frames.LIST_ADMIN.get(indice).setCorreoElectronico(jTextFieldCorreo.getText().trim());
+                Frames.LIST_ADMIN.get(indice).setUsuario(jTextFieldUsuario.getText().trim());
+                Frames.LIST_ADMIN.get(indice).setPassword(jTextFieldPassword.getText().trim());
+
+                Frames.escribirTxt(Frames.LIST_ADMIN, "src/bin/admin_data.txt");
+
+                JOptionPane.showMessageDialog(null, "Administrador modificado correctamente");
+                llenarComboBox();
+                limpiar();
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, "No hay ningun administrador seleccionado");
+            }
+        }
     }//GEN-LAST:event_jButtonModificarAdministradorActionPerformed
 
     //Boton Volver
@@ -201,88 +220,161 @@ public class ModificarAdmin extends javax.swing.JFrame {
 
         this.setVisible(false);
         Frames.verFrame(Frames.GESTION_ADMIN);
-        
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     //Boton borrar administrador
     private void jButtonBorrarAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarAdministradorActionPerformed
+
+        int opt = JOptionPane.showConfirmDialog(null, "¿Realmente desea borrar el Administrador?\nEsta accion no es reversible",
+                "Confirmar accion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         
+        if (opt == 0) {
+
+            if (jComboBoxSeleccionarAdministrador != null) {
+
+                String itemSeleccionado = (String) this.jComboBoxSeleccionarAdministrador.getSelectedItem();
+
+                //Aca obtenemos el ID del Administrador
+                itemSeleccionado = itemSeleccionado.substring(3, 7);
+
+                int indice = -1;
+
+                for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+
+                    if (Frames.LIST_ADMIN.get(i).getSerial() == Integer.parseInt(itemSeleccionado)) {
+                        indice = i;
+                        break;
+                    }
+                }
+
+                Frames.LIST_ADMIN.remove(indice);
+
+                Frames.escribirTxt(Frames.LIST_ADMIN, "src/bin/admin_data.txt");
+
+                JOptionPane.showMessageDialog(null, "Administrador borrado correctamente");
+                llenarComboBox();
+                limpiar();
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, "No hay ningun administrador seleccionado");
+            }
+        }
     }//GEN-LAST:event_jButtonBorrarAdministradorActionPerformed
 
     private void jButtonLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarCamposActionPerformed
-        
+
         limpiar();
     }//GEN-LAST:event_jButtonLimpiarCamposActionPerformed
-    
+
     //Metodo para llenar el jComboBox
     public static void llenarComboBox() {
-        
+
         //Vacia el ComboBox para que no se dupliquen registros
         ModificarAdmin.jComboBoxSeleccionarAdministrador.removeAllItems();
-        
-                
+
         try {
-            
+
             BufferedReader br = new BufferedReader(new FileReader("src/bin/admin_data.txt"));
-                        
-            if(br.readLine() == null) {                                               
-                
+
+            //Verificacion de que el txt no este vacio, en caso que este vacio, no hara nada
+            if (br.readLine() == null) {
+
             } else {
-                 
+
                 //Leemos el archivo para poder obtener todos los cambios
                 Frames.leerTxtAdmin();
-                
-            }            
-                        
+            }
+
         } catch (IOException e) {
-            
-            JOptionPane.showConfirmDialog(null, "ERROR AL INICIALIZAR LOS SERIALES,\nCONTACTE CON UN ADMINISTRADOR");
-        }      
-                        
+
+            JOptionPane.showConfirmDialog(null, "Error llenando datos");
+        }
+
         //Llenamos el ComboBox
-        for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {                        
-            
-            ModificarAdmin.jComboBoxSeleccionarAdministrador.addItem("ID: " +
-                    Frames.LIST_ADMIN.get(i).getSerial() +
-                    ", Nombre:" + Frames.LIST_ADMIN.get(i).getNombre());       
-        }        
+        for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+
+            ModificarAdmin.jComboBoxSeleccionarAdministrador.addItem("ID:"
+                    + Frames.LIST_ADMIN.get(i).getSerial()
+                    + ",Usuario:" + Frames.LIST_ADMIN.get(i).getUsuario());
+        }
     }
-    
+
+    //Metodo para verificar que no hayan dos usuarios con el mismo nombre
+    private boolean verificarNombreUsuario() {
+
+        try {
+
+            String user = jTextFieldUsuario.getText().trim();
+
+            Frames.leerTxtAdmin();
+            Frames.leerTxtOperador();
+
+            for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+
+                if (user.equals(Frames.LIST_ADMIN.get(i).getUsuario())) {
+                    JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
+                    return false;
+                }
+            }
+
+            for (int i = 0; i < Frames.LIST_OPERADOR.size(); i++) {
+
+                if (user.equals(Frames.LIST_OPERADOR.get(i).getUsuario())) {
+                    JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
+                    return false;
+                }
+            }
+
+            return true;
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, "Error comprobando usuarios,\ncontacte con un administrador");
+            return false;
+        }
+    }
+
     //Metodo para Verificar que todos los datos sean correctos
     private boolean verificarDatos() {
 
         try {
 
             //Verificacion de que hayan los caracteres necesarios
-            if(jTextFieldNombre.getText().trim().length() < 4) {
-                
+            if (jTextFieldNombre.getText().trim().length() < 4) {
+
                 JOptionPane.showMessageDialog(null, "El nombre minimo debe tener 4 caracteres");
                 return false;
-                
-            } else if(jTextFieldUsuario.getText().trim().length() < 6) {
-                
+
+            } else if (jTextFieldUsuario.getText().trim().length() < 6) {
+
                 JOptionPane.showMessageDialog(null, "El nombre de usuario debe tener minimo\n6 caracteres");
                 return false;
-                
-            } else if(jTextFieldTelefono.getText().trim().length() != 10) {
-                
+
+            } else if (jTextFieldTelefono.getText().trim().length() < 10
+                    && jTextFieldTelefono.getText().trim().length() > 10) {
+
                 JOptionPane.showMessageDialog(null, "El numero de telefono no es correcto");
                 return false;
-                
-            } else if(jTextFieldPassword.getText().trim().length() < 6) {
-                
+
+            } else if (jTextFieldPassword.getText().trim().length() < 6) {
+
                 JOptionPane.showMessageDialog(null, "La contraseña debe tener minimo\n6 caracteres");
-                return false;                
+                return false;
             }
-                        
-            //Si no son numeros lo que se ingreso salta la exepcion y devuelve false
+
+            /*
+                Si no son numeros lo que se ingreso salta la exepcion y devuelve false
+                Se usa Long y no Int porque el maximo de int es 2,147,483,647 y los numeros de celular
+                tienen 10 digitos y suelen comenzar por 3, para evitar errores usamos Long
+             */
             long cedula = Long.parseLong(jTextFieldCedula.getText().trim());
-            int telefono = Integer.parseInt(jTextFieldTelefono.getText().trim());
-            
+            long telefono = Long.parseLong(jTextFieldTelefono.getText().trim());
+
             //Variables que llevaran el conteo de cuantos "@" y "." se consiguen en el correo
             int punto = 0;
             int arroba = 0;
-            
+
             //Aca se recorre todo el correo en busca de los "@" y los "."
             for (int i = 0; i < jTextFieldCorreo.getText().trim().length(); i++) {
 
@@ -315,21 +407,21 @@ public class ModificarAdmin extends javax.swing.JFrame {
             }
 
         } catch (HeadlessException e) {
-            
+
             JOptionPane.showMessageDialog(null, "Algunos Campos son incorrectos\nverifica los datos y vuelve a intentar");
             return false;
-            
+
         } catch (NumberFormatException e) {
-            
+
             //Exepcion en caso de que no sean numeros la cedula y el telefono
             JOptionPane.showMessageDialog(null, "La cedula o telefono no son correctos");
-            return false;            
+            return false;
         }
 
         //Si todo esta bien devuelve true
         return true;
     }
-    
+
     //Metodo para Verificar campos vacios
     private boolean verificarCamposVacios() {
 
@@ -362,13 +454,12 @@ public class ModificarAdmin extends javax.swing.JFrame {
             return false;
 
         } else {
-
             return true;
         }
     }
 
     //Metodo para Limpiar todos los campos
-    private void limpiar() {                
+    private void limpiar() {
         jTextFieldNombre.setText("");
         jTextFieldCedula.setText("");
         jTextFieldTelefono.setText("");
@@ -377,7 +468,7 @@ public class ModificarAdmin extends javax.swing.JFrame {
         jTextFieldPassword.setText("");
         jTextFieldConfirmPassword.setText("");
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBorrarAdministrador;
     private javax.swing.JButton jButtonLimpiarCampos;

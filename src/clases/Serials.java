@@ -16,7 +16,7 @@ public class Serials implements Serializable {
     */
     
     public static int array [] = {1000, 1000, 1000, 1000};   
-        
+    
     /*
         Los indicices son los siguientes
         array[0] es el serial de los Usuarios
@@ -45,8 +45,7 @@ public class Serials implements Serializable {
                 
             } else {
                 
-                Serials.leerSeriales();
-                
+                Serials.leerSeriales();                
             }            
                         
         } catch (IOException e) {

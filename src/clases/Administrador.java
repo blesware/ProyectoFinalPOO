@@ -44,6 +44,38 @@ public class Administrador extends Usuario implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public String getNombre() {
+        return super.getNombre();
+    }
+
+    public void setNombre(String nombre) {
+        super.setNombre(nombre);
+    }
+
+    public String getCedula() {
+        return super.getCedula();
+    }
+
+    public void setCedula(String cedula) {
+        super.setCedula(cedula);
+    }
+
+    public String getCorreoElectronico() {
+        return super.getCorreoElectronico();
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        super.setCorreoElectronico(correoElectronico);
+    }
+
+    public String getTelefono() {
+        return super.getTelefono();
+    }
+
+    public void setTelefono(String telefono) {
+        super.setTelefono(telefono);
+    }
 
     //Metodo toString
     @Override

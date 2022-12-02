@@ -152,7 +152,7 @@ public class AgregarAdmin extends javax.swing.JFrame {
     //Boton agregar administrador
     private void jButtonAgregarAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarAdministradorActionPerformed
 
-        if (verificarCamposVacios() && verificarDatos()) {
+        if (verificarCamposVacios() && verificarDatos() && verificarNombreUsuario()) {
 
             String nombre = jTextFieldNombre.getText().trim();
             String cedula = jTextFieldCedula.getText().trim();
@@ -163,7 +163,9 @@ public class AgregarAdmin extends javax.swing.JFrame {
 
             Administrador admin = new Administrador(nombre, cedula, telefono, correo, user, pass);
 
-            Frames.LIST_ADMIN.add(admin);
+            Frames.leerTxtAdmin();
+            
+            Frames.LIST_ADMIN.add(admin);                        
 
             Frames.escribirTxt(Frames.LIST_ADMIN, "src/bin/admin_data.txt");
             
@@ -185,6 +187,41 @@ public class AgregarAdmin extends javax.swing.JFrame {
         Frames.verFrame(Frames.GESTION_ADMIN);        
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
+    //Metodo para verificar que no hayan dos usuarios con el mismo nombre
+    private boolean verificarNombreUsuario() {
+        
+        try {
+            
+            String user = jTextFieldUsuario.getText().trim();
+            
+            Frames.leerTxtAdmin();
+            Frames.leerTxtOperador();
+            
+            for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+                
+                if(user.equals(Frames.LIST_ADMIN.get(i).getUsuario())) {
+                    JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
+                    return false;
+                }                
+            }
+            
+            for (int i = 0; i < Frames.LIST_OPERADOR.size(); i++) {
+                
+                if(user.equals(Frames.LIST_OPERADOR.get(i).getUsuario())) {
+                    JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
+                    return false;
+                }
+            }
+            
+            return true;
+            
+        } catch (Exception e) {
+         
+            JOptionPane.showMessageDialog(null, "Error comprobando usuarios,\ncontacte con un administrador");
+            return false;
+        }        
+    }
+    
     //Metodo para Verificar que todos los datos sean correctos
     private boolean verificarDatos() {
 
@@ -213,9 +250,13 @@ public class AgregarAdmin extends javax.swing.JFrame {
                 return false;                
             }
                         
-            //Si no son numeros lo que se ingreso salta la exepcion y devuelve false
+            /*
+                Si no son numeros lo que se ingreso salta la exepcion y devuelve false
+                Se usa Long y no Int porque el maximo de int es 2,147,483,647 y los numeros de celular
+                tienen 10 digitos y suelen comenzar por 3, para evitar errores usamos Long
+            */
             long cedula = Long.parseLong(jTextFieldCedula.getText().trim());
-            int telefono = Integer.parseInt(jTextFieldTelefono.getText().trim());
+            long telefono = Long.parseLong(jTextFieldTelefono.getText().trim());
             
             //Variables que llevaran el conteo de cuantos "@" y "." se consiguen en el correo
             int punto = 0;

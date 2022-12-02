@@ -17,8 +17,10 @@ import java.util.*;
  */
 public class Frames extends JFrame {
 
-    /* Aca estan todos los Objetos de los Frames del programa, son estaticos para poder acceder
-       desde cualquier clase sin necesidad de crear objetos de la misma */
+    /* 
+        Aca estan todos los Objetos de los Frames del programa, son estaticos para poder acceder
+        desde cualquier clase sin necesidad de crear objetos de la misma 
+    */
     public final static AgregarAdmin AGREGAR_ADMIN = new AgregarAdmin();
     public final static GestionAdministrador GESTION_ADMIN = new GestionAdministrador();
     public final static ModificarAdmin MODIFICAR_ADMIN = new ModificarAdmin();
@@ -59,14 +61,14 @@ public class Frames extends JFrame {
     public static void escribirTxt(ArrayList list, String nombreArchivo) {
 
         Frames.borrarTxt(nombreArchivo);
-        
+
         try {
 
             OutputStream os = new FileOutputStream(nombreArchivo);
             ObjectOutputStream oos = new ObjectOutputStream(os);
 
             oos.writeObject(list);
-            
+
             oos.close();
 
         } catch (IOException e) {
@@ -78,125 +80,173 @@ public class Frames extends JFrame {
     public static void leerTxtAdmin() {
 
         try {
-         
-            InputStream is = new FileInputStream("src/bin/admin_data.txt");
-            ObjectInputStream ois = new ObjectInputStream(is);                                             
-                                        
-            Frames.LIST_ADMIN = (ArrayList<Administrador>) ois.readObject();
-            
-            ois.close();
-                        
+
+            BufferedReader br = new BufferedReader(new FileReader("src/bin/admin_data.txt"));
+
+            //Verificacion de que exista contenido en el archivo, si no hay no es necesario leer nada
+            if (br.readLine() == null) {
+
+            } else {
+
+                InputStream is = new FileInputStream("src/bin/admin_data.txt");
+                ObjectInputStream ois = new ObjectInputStream(is);
+
+                Frames.LIST_ADMIN = (ArrayList<Administrador>) ois.readObject();
+
+                ois.close();
+            }
+
         } catch (IOException | ClassNotFoundException e) {
-            
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
+
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo admin_data");
         }
     }
-    
+
     //Metodo para leer oper_data.txt
     public static void leerTxtOperador() {
 
         try {
-         
-            InputStream is = new FileInputStream("src/bin/oper_data.txt");
-            ObjectInputStream ois = new ObjectInputStream(is);                                             
-                                        
-            Frames.LIST_OPERADOR = (ArrayList<Operador>) ois.readObject();
-            
-            ois.close();
-                                                                
+
+            BufferedReader br = new BufferedReader(new FileReader("src/bin/oper_data.txt"));
+
+            //Verificacion de que exista contenido en el archivo, si no hay no es necesario leer nada
+            if (br.readLine() == null) {
+
+            } else {
+
+                InputStream is = new FileInputStream("src/bin/oper_data.txt");
+                ObjectInputStream ois = new ObjectInputStream(is);
+
+                Frames.LIST_OPERADOR = (ArrayList<Operador>) ois.readObject();
+
+                ois.close();
+            }
+
         } catch (IOException | ClassNotFoundException e) {
-            
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
-        }                
+
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo operador_data");
+        }
     }
-    
+
     //Metodo para leer user_data.txt
     public static void leerTxtUsuario() {
 
         try {
-         
-            InputStream is = new FileInputStream("src/bin/user_data.txt");
-            ObjectInputStream ois = new ObjectInputStream(is);                                             
-                                        
-            Frames.LIST_USUARIO = (ArrayList<Usuario>) ois.readObject();                        
-                                        
-            ois.close();
-                        
+
+            BufferedReader br = new BufferedReader(new FileReader("src/bin/user_data.txt"));
+
+            //Verificacion de que exista contenido en el archivo, si no hay no es necesario leer nada
+            if (br.readLine() == null) {
+
+            } else {
+
+                InputStream is = new FileInputStream("src/bin/user_data.txt");
+                ObjectInputStream ois = new ObjectInputStream(is);
+
+                Frames.LIST_USUARIO = (ArrayList<Usuario>) ois.readObject();
+
+                ois.close();
+            }
+
         } catch (IOException | ClassNotFoundException e) {
-            
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
-        }                
+
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo user_data");
+        }
     }
 
     //Metodo para leer tiquets_data.txt
     public static void leerTxtTiquet() {
 
         try {
-         
-            InputStream is = new FileInputStream("src/bin/tiquets_data.txt");
-            ObjectInputStream ois = new ObjectInputStream(is);                                             
-                                        
-            Frames.LIST_TIQUETE = (ArrayList<Tiquet>) ois.readObject();                        
-                            
-            ois.close();
-                        
+
+            BufferedReader br = new BufferedReader(new FileReader("src/bin/tiquets_data.txt"));
+
+            //Verificacion de que exista contenido en el archivo, si no hay no es necesario leer nada
+            if (br.readLine() == null) {
+
+            } else {
+
+                InputStream is = new FileInputStream("src/bin/tiquets_data.txt");
+                ObjectInputStream ois = new ObjectInputStream(is);
+
+                Frames.LIST_TIQUETE = (ArrayList<Tiquet>) ois.readObject();
+
+                ois.close();
+            }
+
         } catch (IOException | ClassNotFoundException e) {
-            
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
-        }                
+
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo tiquets_data");
+        }
     }
-    
+
     //Metodo para leer transport_data.txt
     public static void leerTxtTransporte() {
 
         try {
-         
-            InputStream is = new FileInputStream("src/bin/transport_data.txt");
-            ObjectInputStream ois = new ObjectInputStream(is);                                             
-                                        
-            Frames.LIST_EMPRESA_TRANSPORTE = (ArrayList<EmpresaTransporte>) ois.readObject();                        
-                          
-            ois.close();
-                        
+
+            BufferedReader br = new BufferedReader(new FileReader("src/bin/transport_data.txt"));
+
+            //Verificacion de que exista contenido en el archivo, si no hay no es necesario leer nada
+            if (br.readLine() == null) {
+
+            } else {
+
+                InputStream is = new FileInputStream("src/bin/transport_data.txt");
+                ObjectInputStream ois = new ObjectInputStream(is);
+
+                Frames.LIST_EMPRESA_TRANSPORTE = (ArrayList<EmpresaTransporte>) ois.readObject();
+
+                ois.close();
+            }
+
         } catch (IOException | ClassNotFoundException e) {
-            
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
-        }                
+
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo transport_data");
+        }
     }
-    
+
     //Metodo para leer trayect_data.txt
     public static void leerTxtTrayecto() {
 
         try {
-         
-            InputStream is = new FileInputStream("src/bin/trayect_data.txt");
-            ObjectInputStream ois = new ObjectInputStream(is);                                             
-                                        
-            Frames.LIST_TRAYECTO = (ArrayList<Trayecto>) ois.readObject();                        
-                                        
-            ois.close();           
-            
+
+            BufferedReader br = new BufferedReader(new FileReader("src/bin/trayect_data.txt"));
+
+            //Verificacion de que exista contenido en el archivo, si no hay no es necesario leer nada
+            if (br.readLine() == null) {
+
+            } else {
+
+                InputStream is = new FileInputStream("src/bin/trayect_data.txt");
+                ObjectInputStream ois = new ObjectInputStream(is);
+
+                Frames.LIST_TRAYECTO = (ArrayList<Trayecto>) ois.readObject();
+
+                ois.close();
+            }
+
         } catch (IOException | ClassNotFoundException e) {
-            
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo");            
-        }                
+
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo trayect_data");
+        }
     }
-    
+
     //Metodo para borrar un .txt completo
     public static void borrarTxt(String nombreArchivo) {
-        
+
         try {
-            
+
             BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo));
             bw.write("");
             bw.close();
-                        
+
         } catch (IOException e) {
-            
+
             JOptionPane.showConfirmDialog(null, "Error al borrar el Archivo");
-        }                                
+        }
     }
-    
+
     //Metodo para mostrar estos Frames en pantalla
     public static void verFrame(JFrame frame) {
 
