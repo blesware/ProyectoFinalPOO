@@ -1,10 +1,8 @@
 package frames.admin;
 
-import clases.*;
+import clases.Frames;
 import java.awt.HeadlessException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import javax.swing.*;
 
 /**
@@ -39,6 +37,7 @@ public class ModificarAdmin extends javax.swing.JFrame {
         jButtonModificarAdministrador = new javax.swing.JButton();
         jButtonVolver = new javax.swing.JButton();
         jButtonBorrarAdministrador = new javax.swing.JButton();
+        jButtonLimpiarCampos = new javax.swing.JButton();
         jComboBoxSeleccionarAdministrador = new javax.swing.JComboBox<>();
         jTextFieldNombre = new javax.swing.JTextField();
         jTextFieldCedula = new javax.swing.JTextField();
@@ -47,7 +46,6 @@ public class ModificarAdmin extends javax.swing.JFrame {
         jTextFieldUsuario = new javax.swing.JTextField();
         jTextFieldPassword = new javax.swing.JTextField();
         jTextFieldConfirmPassword = new javax.swing.JTextField();
-        jButtonLimpiarCampos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(562, 300));
@@ -139,15 +137,6 @@ public class ModificarAdmin extends javax.swing.JFrame {
         });
         jPanelFondo.add(jButtonBorrarAdministrador, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 240, 140, 50));
 
-        jPanelFondo.add(jComboBoxSeleccionarAdministrador, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 180, -1));
-        jPanelFondo.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 180, -1));
-        jPanelFondo.add(jTextFieldCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 180, -1));
-        jPanelFondo.add(jTextFieldTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 180, -1));
-        jPanelFondo.add(jTextFieldCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, 180, -1));
-        jPanelFondo.add(jTextFieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 180, -1));
-        jPanelFondo.add(jTextFieldPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 180, -1));
-        jPanelFondo.add(jTextFieldConfirmPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 240, 180, -1));
-
         jButtonLimpiarCampos.setBackground(new java.awt.Color(102, 102, 102));
         jButtonLimpiarCampos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonLimpiarCampos.setForeground(new java.awt.Color(255, 255, 255));
@@ -158,6 +147,15 @@ public class ModificarAdmin extends javax.swing.JFrame {
             }
         });
         jPanelFondo.add(jButtonLimpiarCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, -1, -1));
+
+        jPanelFondo.add(jComboBoxSeleccionarAdministrador, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 180, -1));
+        jPanelFondo.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 180, -1));
+        jPanelFondo.add(jTextFieldCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 180, -1));
+        jPanelFondo.add(jTextFieldTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 180, -1));
+        jPanelFondo.add(jTextFieldCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, 180, -1));
+        jPanelFondo.add(jTextFieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 180, -1));
+        jPanelFondo.add(jTextFieldPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 180, -1));
+        jPanelFondo.add(jTextFieldConfirmPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 240, 180, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -176,42 +174,48 @@ public class ModificarAdmin extends javax.swing.JFrame {
     //Boton modificar administrador
     private void jButtonModificarAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarAdministradorActionPerformed
 
-        if (verificarCamposVacios() && verificarDatos() && verificarNombreUsuario()) {
+        try {
 
-            if (jComboBoxSeleccionarAdministrador != null) {
+            if (verificarCamposVacios() && verificarDatos() && verificarNombreUsuario()) {
 
-                String itemSeleccionado = (String) this.jComboBoxSeleccionarAdministrador.getSelectedItem();
+                if (!ModificarAdmin.jComboBoxSeleccionarAdministrador.getSelectedItem().equals("")) {
 
-                //Aca obtenemos el ID del Administrador
-                itemSeleccionado = itemSeleccionado.substring(3, 7);               
+                    String itemSeleccionado = (String) ModificarAdmin.jComboBoxSeleccionarAdministrador.getSelectedItem();
 
-                int indice = -1;
+                    //Aca obtenemos el ID del Administrador
+                    itemSeleccionado = itemSeleccionado.substring(3, 7);
 
-                for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+                    int indice = -1;
 
-                    if (Frames.LIST_ADMIN.get(i).getSerial() == Integer.parseInt(itemSeleccionado)) {
-                        indice = i;
-                        break;
+                    for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+
+                        if (Frames.LIST_ADMIN.get(i).getSerial() == Integer.parseInt(itemSeleccionado)) {
+                            indice = i;
+                            break;
+                        }
                     }
+
+                    Frames.LIST_ADMIN.get(indice).setNombre(jTextFieldNombre.getText().trim());
+                    Frames.LIST_ADMIN.get(indice).setCedula(jTextFieldCedula.getText().trim());
+                    Frames.LIST_ADMIN.get(indice).setTelefono(jTextFieldTelefono.getText().trim());
+                    Frames.LIST_ADMIN.get(indice).setCorreoElectronico(jTextFieldCorreo.getText().trim());
+                    Frames.LIST_ADMIN.get(indice).setUsuario(jTextFieldUsuario.getText().trim());
+                    Frames.LIST_ADMIN.get(indice).setPassword(jTextFieldPassword.getText().trim());
+
+                    Frames.escribirTxt(Frames.LIST_ADMIN, "src/bin/admin_data.txt");
+
+                    JOptionPane.showMessageDialog(null, "Administrador modificado correctamente");
+                    llenarComboBox();
+                    limpiar();
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "No hay ningun administrador seleccionado");
                 }
-
-                Frames.LIST_ADMIN.get(indice).setNombre(jTextFieldNombre.getText().trim());
-                Frames.LIST_ADMIN.get(indice).setCedula(jTextFieldCedula.getText().trim());
-                Frames.LIST_ADMIN.get(indice).setTelefono(jTextFieldTelefono.getText().trim());
-                Frames.LIST_ADMIN.get(indice).setCorreoElectronico(jTextFieldCorreo.getText().trim());
-                Frames.LIST_ADMIN.get(indice).setUsuario(jTextFieldUsuario.getText().trim());
-                Frames.LIST_ADMIN.get(indice).setPassword(jTextFieldPassword.getText().trim());
-
-                Frames.escribirTxt(Frames.LIST_ADMIN, "src/bin/admin_data.txt");
-
-                JOptionPane.showMessageDialog(null, "Administrador modificado correctamente");
-                llenarComboBox();
-                limpiar();
-
-            } else {
-
-                JOptionPane.showMessageDialog(null, "No hay ningun administrador seleccionado");
             }
+
+        } catch (HeadlessException | NumberFormatException | NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "No hay administradores");
         }
     }//GEN-LAST:event_jButtonModificarAdministradorActionPerformed
 
@@ -228,40 +232,47 @@ public class ModificarAdmin extends javax.swing.JFrame {
         int opt = JOptionPane.showConfirmDialog(null, "¿Realmente desea borrar el Administrador?\nEsta accion no es reversible",
                 "Confirmar accion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-        if (opt == 0) {
+        try {
 
-            if (jComboBoxSeleccionarAdministrador != null) {
+            if (opt == 0) {
 
-                String itemSeleccionado = (String) this.jComboBoxSeleccionarAdministrador.getSelectedItem();
+                if (!ModificarAdmin.jComboBoxSeleccionarAdministrador.getSelectedItem().equals("")) {
 
-                //Aca obtenemos el ID del Administrador
-                int ID = Integer.parseInt(itemSeleccionado.substring(3, 7));
+                    String itemSeleccionado = (String) ModificarAdmin.jComboBoxSeleccionarAdministrador.getSelectedItem();
 
-                int indice = -1;
+                    //Aca obtenemos el ID del Administrador
+                    int ID = Integer.parseInt(itemSeleccionado.substring(3, 7));
 
-                for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+                    int indice = -1;
 
-                    if (Frames.LIST_ADMIN.get(i).getSerial() == ID) {
-                        indice = i;
-                        break;
+                    for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+
+                        if (Frames.LIST_ADMIN.get(i).getSerial() == ID) {
+                            indice = i;
+                            break;
+                        }
                     }
+
+                    Frames.LIST_ADMIN.remove(indice);
+
+                    Frames.escribirTxt(Frames.LIST_ADMIN, "src/bin/admin_data.txt");
+
+                    JOptionPane.showMessageDialog(null, "Administrador borrado correctamente");
+                    llenarComboBox();
+                    limpiar();
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "No hay ningun administrador seleccionado");
                 }
-
-                Frames.LIST_ADMIN.remove(indice);
-
-                Frames.escribirTxt(Frames.LIST_ADMIN, "src/bin/admin_data.txt");
-
-                JOptionPane.showMessageDialog(null, "Administrador borrado correctamente");
-                llenarComboBox();
-                limpiar();
-
-            } else {
-
-                JOptionPane.showMessageDialog(null, "No hay ningun administrador seleccionado");
             }
+
+        } catch (HeadlessException | NumberFormatException | NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "No hay administradores");
         }
     }//GEN-LAST:event_jButtonBorrarAdministradorActionPerformed
 
+    //Boton limpiar campos
     private void jButtonLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarCamposActionPerformed
 
         limpiar();
@@ -305,15 +316,13 @@ public class ModificarAdmin extends javax.swing.JFrame {
 
         try {
 
-            String itemSeleccionado = (String) this.jComboBoxSeleccionarAdministrador.getSelectedItem();
+            String itemSeleccionado = (String) ModificarAdmin.jComboBoxSeleccionarAdministrador.getSelectedItem();
 
             String user = jTextFieldUsuario.getText().trim();
-            
+
             //Obtencion del Usuario actual
             String userActual = itemSeleccionado.substring(16, itemSeleccionado.length());
 
-            System.out.println(userActual);
-            
             Frames.leerTxtAdmin();
             Frames.leerTxtOperador();
 
@@ -342,7 +351,7 @@ public class ModificarAdmin extends javax.swing.JFrame {
                     if (user.equals(userActual)) {
                         break;
                     } else {
-                        
+
                         JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
                         return false;
                     }
@@ -351,7 +360,7 @@ public class ModificarAdmin extends javax.swing.JFrame {
 
             return true;
 
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
 
             JOptionPane.showMessageDialog(null, "Error comprobando usuarios,\ncontacte con un administrador");
             return false;

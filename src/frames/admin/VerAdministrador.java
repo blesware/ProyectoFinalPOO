@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VerAdministrador extends javax.swing.JFrame {
 
+    //Modelo del JTable
     private static DefaultTableModel modelo = new DefaultTableModel(){
         
         //Aca sobreescribimos el metodo isCellEditable para que ninguna columna ni fila sea editable
@@ -27,15 +28,15 @@ public class VerAdministrador extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Ver Administradores Registrados");
         
-        this.modelo.addColumn("ID");
-        this.modelo.addColumn("Nombre");
-        this.modelo.addColumn("Cedula");
-        this.modelo.addColumn("Telefono");
-        this.modelo.addColumn("Correo");
-        this.modelo.addColumn("Usuario");
-        this.modelo.addColumn("Contraseña");
+        VerAdministrador.modelo.addColumn("ID");
+        VerAdministrador.modelo.addColumn("Nombre");
+        VerAdministrador.modelo.addColumn("Cedula");
+        VerAdministrador.modelo.addColumn("Telefono");
+        VerAdministrador.modelo.addColumn("Correo");
+        VerAdministrador.modelo.addColumn("Usuario");
+        VerAdministrador.modelo.addColumn("Contraseña");
         
-        jTableAdministrador.setModel(modelo);
+        VerAdministrador.jTableAdministrador.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -107,7 +108,6 @@ public class VerAdministrador extends javax.swing.JFrame {
 
         this.setVisible(false);
         Frames.verFrame(Frames.GESTION_ADMIN);
-
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     //Metodo para llenar el JTable
@@ -116,7 +116,7 @@ public class VerAdministrador extends javax.swing.JFrame {
         limpiarTable();        
         Frames.leerTxtAdmin();
         
-        ArrayList<String []> listTable = new ArrayList<String []>();
+        ArrayList<String []> listTable = new ArrayList<>();
         
         //Llenamos el ArrayList temporal que llenara el JTable
         for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
@@ -135,8 +135,7 @@ public class VerAdministrador extends javax.swing.JFrame {
         //Llenamos el JTable
         for (int i = 0; i < listTable.size(); i++) {
             
-            modelo.addRow(listTable.get(i));
-            
+            VerAdministrador.modelo.addRow(listTable.get(i));            
         }        
     }
     
@@ -145,10 +144,10 @@ public class VerAdministrador extends javax.swing.JFrame {
         
         try {
             
-            int filas = jTableAdministrador.getRowCount();
+            int filas = VerAdministrador.jTableAdministrador.getRowCount();
             
             for (int i = 0;filas>i; i++) {
-                modelo.removeRow(0);
+                VerAdministrador.modelo.removeRow(0);
             }
             
         } catch (Exception e) {

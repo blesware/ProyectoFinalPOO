@@ -115,6 +115,7 @@ public class GestionOperador extends javax.swing.JFrame {
     private void jButtonVerOperadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerOperadorActionPerformed
 
         this.setVisible(false);
+        VerOperador.llenarTable();
         Frames.verFrame(Frames.VER_OPERADOR);
         
     }//GEN-LAST:event_jButtonVerOperadorActionPerformed
@@ -139,6 +140,7 @@ public class GestionOperador extends javax.swing.JFrame {
     private void jButtonModificarOperadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarOperadorActionPerformed
 
         this.setVisible(false);
+        ModificarOperador.llenarComboBox();
         Frames.verFrame(Frames.MODIFICAR_OPERADOR);
         
     }//GEN-LAST:event_jButtonModificarOperadorActionPerformed

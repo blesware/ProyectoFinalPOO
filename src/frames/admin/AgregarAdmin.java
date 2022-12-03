@@ -34,6 +34,7 @@ public class AgregarAdmin extends javax.swing.JFrame {
         jLabelConfirmPassword = new javax.swing.JLabel();
         jButtonAgregarAdministrador = new javax.swing.JButton();
         jButtonLimpiarCampos = new javax.swing.JButton();
+        jButtonVolver = new javax.swing.JButton();
         jTextFieldNombre = new javax.swing.JTextField();
         jTextFieldCedula = new javax.swing.JTextField();
         jTextFieldTelefono = new javax.swing.JTextField();
@@ -41,7 +42,6 @@ public class AgregarAdmin extends javax.swing.JFrame {
         jTextFieldUsuario = new javax.swing.JTextField();
         jTextFieldPassword = new javax.swing.JTextField();
         jTextFieldConfirmPassword = new javax.swing.JTextField();
-        jButtonVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(562, 300));
@@ -116,13 +116,6 @@ public class AgregarAdmin extends javax.swing.JFrame {
             }
         });
         jPanelFondo.add(jButtonLimpiarCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 250, -1, -1));
-        jPanelFondo.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 180, -1));
-        jPanelFondo.add(jTextFieldCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 180, -1));
-        jPanelFondo.add(jTextFieldTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 180, -1));
-        jPanelFondo.add(jTextFieldCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 180, -1));
-        jPanelFondo.add(jTextFieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, 180, -1));
-        jPanelFondo.add(jTextFieldPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 180, -1));
-        jPanelFondo.add(jTextFieldConfirmPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 180, -1));
 
         jButtonVolver.setBackground(new java.awt.Color(102, 102, 102));
         jButtonVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -134,6 +127,13 @@ public class AgregarAdmin extends javax.swing.JFrame {
             }
         });
         jPanelFondo.add(jButtonVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        jPanelFondo.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 180, -1));
+        jPanelFondo.add(jTextFieldCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 180, -1));
+        jPanelFondo.add(jTextFieldTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 180, -1));
+        jPanelFondo.add(jTextFieldCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 180, -1));
+        jPanelFondo.add(jTextFieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, 180, -1));
+        jPanelFondo.add(jTextFieldPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 180, -1));
+        jPanelFondo.add(jTextFieldConfirmPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 180, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -200,7 +200,7 @@ public class AgregarAdmin extends javax.swing.JFrame {
             for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
                 
                 if(user.equals(Frames.LIST_ADMIN.get(i).getUsuario())) {
-                    JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
+                    JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe");
                     return false;
                 }                
             }
@@ -215,7 +215,7 @@ public class AgregarAdmin extends javax.swing.JFrame {
             
             return true;
             
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
          
             JOptionPane.showMessageDialog(null, "Error comprobando usuarios,\ncontacte con un administrador");
             return false;

@@ -1,6 +1,7 @@
 package frames.main;
 
 import clases.Frames;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,7 +13,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame {
     public PrincipalAdministrador() {
         initComponents();
         setResizable(false);
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
         setTitle("Bienvenido Administrador");
     }
 
@@ -171,7 +172,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame {
 
         this.setVisible(false);
         Frames.verFrame(Frames.GESTION_USUARIO);
-        
+
     }//GEN-LAST:event_jButtonGestionarUsuarioActionPerformed
 
     //Boton gestionar tiquete
@@ -179,47 +180,51 @@ public class PrincipalAdministrador extends javax.swing.JFrame {
 
         this.setVisible(false);
         Frames.verFrame(Frames.GESTION_TIQUETE);
-        
+
     }//GEN-LAST:event_jButtonGestionarTiquetActionPerformed
 
     //Boton volver
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
 
-        this.setVisible(false);
-        Frames.verFrame(Frames.LOGIN);
-        
+        int opt = JOptionPane.showConfirmDialog(null, "¿Realmente desea salir?",
+                "Confirmar accion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (opt == 0) {
+            this.setVisible(false);
+            Frames.verFrame(Frames.LOGIN);
+        }
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     //Boton gestionar administrador
     private void jButtonGestionarAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGestionarAdministradorActionPerformed
-        
+
         this.setVisible(false);
         Frames.verFrame(Frames.GESTION_ADMIN);
-        
+
     }//GEN-LAST:event_jButtonGestionarAdministradorActionPerformed
 
     //Boton gestionar transporte
     private void jButtonGestionarTransporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGestionarTransporteActionPerformed
-        
+
         this.setVisible(false);
         Frames.verFrame(Frames.GESTION_TRANSPORTE);
-        
+
     }//GEN-LAST:event_jButtonGestionarTransporteActionPerformed
 
     //Boton gestionar trayecto
     private void jButtonGestionarTrayectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGestionarTrayectoActionPerformed
-        
+
         this.setVisible(false);
         Frames.verFrame(Frames.GESTION_TRAYECTO);
-        
+
     }//GEN-LAST:event_jButtonGestionarTrayectoActionPerformed
 
     //Boton gestionar operador
     private void jButtonGestionarOperadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGestionarOperadorActionPerformed
-        
+
         this.setVisible(false);
         Frames.verFrame(Frames.GESTION_OPERADOR);
-        
+
     }//GEN-LAST:event_jButtonGestionarOperadorActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

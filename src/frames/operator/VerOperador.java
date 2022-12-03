@@ -1,6 +1,9 @@
 package frames.operator;
 
 import clases.Frames;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -8,12 +11,32 @@ import clases.Frames;
  */
 public class VerOperador extends javax.swing.JFrame {
 
+    //Modelo del JTable
+    private static DefaultTableModel modelo = new DefaultTableModel(){
+        
+        //Aca sobreescribimos el metodo isCellEditable para que ninguna columna ni fila sea editable
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }    
+    };
+    
     //Constructor
     public VerOperador() {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null); 
         setTitle("Ver Operadores Registrados");
+        
+        VerOperador.modelo.addColumn("ID");
+        VerOperador.modelo.addColumn("Nombre");
+        VerOperador.modelo.addColumn("Cedula");
+        VerOperador.modelo.addColumn("Telefono");
+        VerOperador.modelo.addColumn("Correo");
+        VerOperador.modelo.addColumn("Usuario");
+        VerOperador.modelo.addColumn("Contraseña");
+        
+        VerOperador.jTableOperador.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -64,7 +87,7 @@ public class VerOperador extends javax.swing.JFrame {
         ));
         jScrollPane.setViewportView(jTableOperador);
 
-        jPanelFondo.add(jScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 70, -1, 300));
+        jPanelFondo.add(jScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 70, 540, 300));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -88,11 +111,57 @@ public class VerOperador extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
+    //Metodo para llenar el JTable
+    public static void llenarTable() {
+        
+        limpiarTable();        
+        Frames.leerTxtOperador();
+        
+        ArrayList<String []> listTable = new ArrayList<>();
+        
+        //Llenamos el ArrayList temporal que llenara el JTable
+        for (int i = 0; i < Frames.LIST_OPERADOR.size(); i++) {
+            
+            String aux [] = new String[] {String.valueOf(Frames.LIST_OPERADOR.get(i).getSerial()), 
+                    Frames.LIST_OPERADOR.get(i).getNombre(), 
+                    Frames.LIST_OPERADOR.get(i).getCedula(), 
+                    Frames.LIST_OPERADOR.get(i).getTelefono(), 
+                    Frames.LIST_OPERADOR.get(i).getCorreoElectronico(), 
+                    Frames.LIST_OPERADOR.get(i).getUsuario(), 
+                    Frames.LIST_OPERADOR.get(i).getPassword()};
+
+            listTable.add(aux);
+        }
+        
+        //Llenamos el JTable
+        for (int i = 0; i < listTable.size(); i++) {
+            
+            VerOperador.modelo.addRow(listTable.get(i));            
+        }        
+    }
+    
+    //Metodo para limpiar las filas del JTable
+    public static void limpiarTable() {
+        
+        try {
+            
+            int filas = VerOperador.jTableOperador.getRowCount();
+            
+            for (int i = 0;filas>i; i++) {
+                VerOperador.modelo.removeRow(0);
+            }
+            
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabelTitulo;
     private javax.swing.JPanel jPanelFondo;
     private javax.swing.JScrollPane jScrollPane;
-    private javax.swing.JTable jTableOperador;
+    private static javax.swing.JTable jTableOperador;
     // End of variables declaration//GEN-END:variables
 }

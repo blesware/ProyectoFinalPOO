@@ -1,6 +1,9 @@
 package frames.user;
 
 import clases.Frames;
+import java.awt.HeadlessException;
+import java.io.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,7 +15,7 @@ public class ModificarUsuario extends javax.swing.JFrame {
     public ModificarUsuario() {
         initComponents();
         setResizable(false);
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
         setTitle("Modificar Usuario");
     }
 
@@ -31,6 +34,7 @@ public class ModificarUsuario extends javax.swing.JFrame {
         jButtonModificarUsuario = new javax.swing.JButton();
         jButtonVolver = new javax.swing.JButton();
         jButtonBorrarUsuario = new javax.swing.JButton();
+        jButtonLimpiarCampos = new javax.swing.JButton();
         jComboBoxSeleccionarUsuario = new javax.swing.JComboBox<>();
         jTextFieldNombre = new javax.swing.JTextField();
         jTextFieldCedula = new javax.swing.JTextField();
@@ -110,7 +114,18 @@ public class ModificarUsuario extends javax.swing.JFrame {
                 jButtonBorrarUsuarioActionPerformed(evt);
             }
         });
-        jPanelFondo.add(jButtonBorrarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 180, 22));
+        jPanelFondo.add(jButtonBorrarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 180, 30));
+
+        jButtonLimpiarCampos.setBackground(new java.awt.Color(102, 102, 102));
+        jButtonLimpiarCampos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonLimpiarCampos.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonLimpiarCampos.setText("Limpiar Campos");
+        jButtonLimpiarCampos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLimpiarCamposActionPerformed(evt);
+            }
+        });
+        jPanelFondo.add(jButtonLimpiarCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 180, -1));
 
         jPanelFondo.add(jComboBoxSeleccionarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 180, -1));
         jPanelFondo.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 180, -1));
@@ -132,9 +147,53 @@ public class ModificarUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Boton agregar usuario
+    //Boton modificar usuario
     private void jButtonModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarUsuarioActionPerformed
 
+        try {
+
+            if (verificarCamposVacios() && verificarDatos() && verificarNombreUsuario()) {
+
+                if (!ModificarUsuario.jComboBoxSeleccionarUsuario.getSelectedItem().equals("")) {
+
+                    String itemSeleccionado;
+
+                    itemSeleccionado = (String) ModificarUsuario.jComboBoxSeleccionarUsuario.getSelectedItem();
+
+                    //Aca obtenemos el ID del Administrador
+                    itemSeleccionado = itemSeleccionado.substring(3, 7);
+
+                    int indice = -1;
+
+                    for (int i = 0; i < Frames.LIST_USUARIO.size(); i++) {
+
+                        if (Frames.LIST_USUARIO.get(i).getSerial() == Integer.parseInt(itemSeleccionado)) {
+                            indice = i;
+                            break;
+                        }
+                    }
+
+                    Frames.LIST_USUARIO.get(indice).setNombre(jTextFieldNombre.getText().trim());
+                    Frames.LIST_USUARIO.get(indice).setCedula(jTextFieldCedula.getText().trim());
+                    Frames.LIST_USUARIO.get(indice).setTelefono(jTextFieldTelefono.getText().trim());
+                    Frames.LIST_USUARIO.get(indice).setCorreoElectronico(jTextFieldCorreo.getText().trim());
+
+                    Frames.escribirTxt(Frames.LIST_USUARIO, "src/bin/user_data.txt");
+
+                    JOptionPane.showMessageDialog(null, "Usuario modificado correctamente");
+                    llenarComboBox();
+                    limpiar();
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "No hay ningun usuario seleccionado");
+                }
+
+            }
+
+        } catch (HeadlessException | NumberFormatException | NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "No hay usuarios");
+        }
     }//GEN-LAST:event_jButtonModificarUsuarioActionPerformed
 
     //Boton Volver
@@ -142,19 +201,241 @@ public class ModificarUsuario extends javax.swing.JFrame {
 
         this.setVisible(false);
         Frames.verFrame(Frames.GESTION_USUARIO);
-        
+
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     //Boton borrar usuario
     private void jButtonBorrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarUsuarioActionPerformed
-        
+
+        int opt = JOptionPane.showConfirmDialog(null, "¿Realmente desea borrar el Usuario?\nEsta accion no es reversible",
+                "Confirmar accion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        try {
+
+            if (opt == 0) {
+
+                if (!jComboBoxSeleccionarUsuario.getSelectedItem().equals("")) {
+
+                    String itemSeleccionado = (String) ModificarUsuario.jComboBoxSeleccionarUsuario.getSelectedItem();
+
+                    //Aca obtenemos el ID del Usuario
+                    int ID = Integer.parseInt(itemSeleccionado.substring(3, 7));
+
+                    int indice = -1;
+
+                    for (int i = 0; i < Frames.LIST_USUARIO.size(); i++) {
+
+                        if (Frames.LIST_USUARIO.get(i).getSerial() == ID) {
+                            indice = i;
+                            break;
+                        }
+                    }
+
+                    Frames.LIST_USUARIO.remove(indice);
+
+                    Frames.escribirTxt(Frames.LIST_USUARIO, "src/bin/user_data.txt");
+
+                    JOptionPane.showMessageDialog(null, "Usuario borrado correctamente");
+                    llenarComboBox();
+                    limpiar();
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "No hay ningun usuario seleccionado");
+                }
+            }
+
+        } catch (HeadlessException | NumberFormatException | NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "No hay usuarios");
+        }
     }//GEN-LAST:event_jButtonBorrarUsuarioActionPerformed
-   
+
+    //Boton limpiar campos
+    private void jButtonLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarCamposActionPerformed
+
+        limpiar();
+    }//GEN-LAST:event_jButtonLimpiarCamposActionPerformed
+
+    //Metodo para llenar el jComboBox
+    public static void llenarComboBox() {
+
+        //Vacia el ComboBox para que no se dupliquen registros
+        ModificarUsuario.jComboBoxSeleccionarUsuario.removeAllItems();
+
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader("src/bin/user_data.txt"));
+
+            //Verificacion de que el txt no este vacio, en caso que este vacio, no hara nada
+            if (br.readLine() == null) {
+
+            } else {
+
+                //Leemos el archivo para poder obtener todos los cambios
+                Frames.leerTxtUsuario();
+            }
+
+        } catch (IOException e) {
+
+            JOptionPane.showConfirmDialog(null, "Error llenando datos");
+        }
+
+        //Llenamos el ComboBox
+        for (int i = 0; i < Frames.LIST_USUARIO.size(); i++) {
+
+            ModificarUsuario.jComboBoxSeleccionarUsuario.addItem("ID:"
+                    + Frames.LIST_USUARIO.get(i).getSerial()
+                    + ",Usuario:" + Frames.LIST_USUARIO.get(i).getNombre());
+        }
+    }
+
+    //Metodo para verificar que no hayan dos usuarios con el mismo nombre
+    private boolean verificarNombreUsuario() {
+
+        try {
+
+            String itemSeleccionado = (String) ModificarUsuario.jComboBoxSeleccionarUsuario.getSelectedItem();
+
+            String user = jTextFieldNombre.getText().trim();
+
+            //Obtencion del Usuario actual
+            String userActual = itemSeleccionado.substring(16, itemSeleccionado.length());
+
+            Frames.leerTxtUsuario();
+
+            //Recorremos todos los usuarios en busca del mismo nombre de usuario
+            for (int i = 0; i < Frames.LIST_USUARIO.size(); i++) {
+
+                if (user.equals(Frames.LIST_USUARIO.get(i).getNombre())) {
+
+                    //Verificacion para ver si el nombre de usuario es el mismo que ya tiene actual el usuario
+                    if (user.equals(userActual)) {
+                        break;
+                    } else {
+
+                        JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+
+        } catch (HeadlessException e) {
+
+            JOptionPane.showMessageDialog(null, "Error comprobando usuarios,\ncontacte con un administrador");
+            return false;
+        }
+    }
+
+    //Metodo para Verificar que todos los datos sean correctos
+    private boolean verificarDatos() {
+
+        try {
+
+            //Verificacion de que hayan los caracteres necesarios
+            if (jTextFieldNombre.getText().trim().length() < 4) {
+
+                JOptionPane.showMessageDialog(null, "El nombre minimo debe tener 4 caracteres");
+                return false;
+
+            } else if (jTextFieldTelefono.getText().trim().length() < 10
+                    && jTextFieldTelefono.getText().trim().length() > 10) {
+
+                JOptionPane.showMessageDialog(null, "El numero de telefono no es correcto");
+                return false;
+            }
+
+            /*
+                Si no son numeros lo que se ingreso salta la exepcion y devuelve false
+                Se usa Long y no Int porque el maximo de int es 2,147,483,647 y los numeros de celular
+                tienen 10 digitos y suelen comenzar por 3, para evitar errores usamos Long
+             */
+            long cedula = Long.parseLong(jTextFieldCedula.getText().trim());
+            long telefono = Long.parseLong(jTextFieldTelefono.getText().trim());
+
+            //Variables que llevaran el conteo de cuantos "@" y "." se consiguen en el correo
+            int punto = 0;
+            int arroba = 0;
+
+            //Aca se recorre todo el correo en busca de los "@" y los "."
+            for (int i = 0; i < jTextFieldCorreo.getText().trim().length(); i++) {
+
+                if (jTextFieldCorreo.getText().trim().charAt(i) == '.') {
+                    punto++;
+                }
+
+                if (jTextFieldCorreo.getText().trim().charAt(i) == '@') {
+                    arroba++;
+                }
+            }
+
+            //Verificacion de que no hayan mas de 1 o 0 "@´s" y ".´s" en el correo
+            if (punto > 1 || punto == 0) {
+
+                JOptionPane.showMessageDialog(null, "Correo no valido, verifique su correo");
+                return false;
+
+            } else if (arroba > 1 || punto == 0) {
+
+                JOptionPane.showMessageDialog(null, "Correo no valido, verifique su correo");
+                return false;
+            }
+
+        } catch (HeadlessException e) {
+
+            JOptionPane.showMessageDialog(null, "Algunos Campos son incorrectos\nverifica los datos y vuelve a intentar");
+            return false;
+
+        } catch (NumberFormatException e) {
+
+            //Exepcion en caso de que no sean numeros la cedula y el telefono
+            JOptionPane.showMessageDialog(null, "La cedula o telefono no son correctos");
+            return false;
+        }
+
+        //Si todo esta bien devuelve true
+        return true;
+    }
+
+    //Metodo para Verificar campos vacios
+    private boolean verificarCamposVacios() {
+
+        if (jTextFieldNombre.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldCedula.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldTelefono.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldCorreo.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else {
+            return true;
+        }
+    }
+
+    //Metodo para Limpiar todos los campos
+    private void limpiar() {
+        jTextFieldNombre.setText("");
+        jTextFieldCedula.setText("");
+        jTextFieldTelefono.setText("");
+        jTextFieldCorreo.setText("");
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBorrarUsuario;
+    private javax.swing.JButton jButtonLimpiarCampos;
     private javax.swing.JButton jButtonModificarUsuario;
     private javax.swing.JButton jButtonVolver;
-    private javax.swing.JComboBox<String> jComboBoxSeleccionarUsuario;
+    private static javax.swing.JComboBox<String> jComboBoxSeleccionarUsuario;
     private javax.swing.JLabel jLabelCedula;
     private javax.swing.JLabel jLabelCorreo;
     private javax.swing.JLabel jLabelModificarUsuario;

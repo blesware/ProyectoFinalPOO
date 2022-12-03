@@ -1,7 +1,6 @@
 package frames.user;
 
 import clases.Frames;
-import frames.main.PrincipalAdministrador;
 
 /**
  *
@@ -116,6 +115,7 @@ public class GestionUsuario extends javax.swing.JFrame {
     private void jButtonVerUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerUsuarioActionPerformed
 
         this.setVisible(false);
+        VerUsuarios.llenarTable();
         Frames.verFrame(Frames.VER_USUARIO);
         
     }//GEN-LAST:event_jButtonVerUsuarioActionPerformed
@@ -140,6 +140,7 @@ public class GestionUsuario extends javax.swing.JFrame {
     private void jButtonModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarUsuarioActionPerformed
         
         this.setVisible(false);
+        ModificarUsuario.llenarComboBox();
         Frames.verFrame(Frames.MODIFICAR_USUARIO);
         
     }//GEN-LAST:event_jButtonModificarUsuarioActionPerformed

@@ -1,6 +1,8 @@
 package frames.operator;
 
-import clases.Frames;
+import clases.*;
+import java.awt.HeadlessException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,6 +34,7 @@ public class AgregarOperador extends javax.swing.JFrame {
         jLabelConfirmPassword = new javax.swing.JLabel();
         jButtonVolver = new javax.swing.JButton();
         jButtonAgregarOperador = new javax.swing.JButton();
+        jButtonLimpiarCampos = new javax.swing.JButton();
         jTextFieldNombre = new javax.swing.JTextField();
         jTextFieldCedula = new javax.swing.JTextField();
         jTextFieldTelefono = new javax.swing.JTextField();
@@ -113,6 +116,17 @@ public class AgregarOperador extends javax.swing.JFrame {
             }
         });
         jPanelFondo.add(jButtonAgregarOperador, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, 140, 140));
+
+        jButtonLimpiarCampos.setBackground(new java.awt.Color(102, 102, 102));
+        jButtonLimpiarCampos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonLimpiarCampos.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonLimpiarCampos.setText("Limpiar Campos");
+        jButtonLimpiarCampos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLimpiarCamposActionPerformed(evt);
+            }
+        });
+        jPanelFondo.add(jButtonLimpiarCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 250, -1, -1));
         jPanelFondo.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 180, -1));
         jPanelFondo.add(jTextFieldCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 180, -1));
         jPanelFondo.add(jTextFieldTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 180, -1));
@@ -138,6 +152,26 @@ public class AgregarOperador extends javax.swing.JFrame {
     //Boton agregar operador
     private void jButtonAgregarOperadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarOperadorActionPerformed
 
+        if (verificarCamposVacios() && verificarDatos() && verificarNombreUsuario()) {
+
+            String nombre = jTextFieldNombre.getText().trim();
+            String cedula = jTextFieldCedula.getText().trim();
+            String telefono = jTextFieldTelefono.getText().trim();
+            String correo = jTextFieldCorreo.getText().trim();
+            String user = jTextFieldUsuario.getText().trim();
+            String pass = jTextFieldPassword.getText().trim();
+
+            Operador oper = new Operador(nombre, cedula, telefono, correo, user, pass);
+
+            Frames.leerTxtOperador();
+            
+            Frames.LIST_OPERADOR.add(oper);                        
+
+            Frames.escribirTxt(Frames.LIST_OPERADOR, "src/bin/oper_data.txt");
+            
+            JOptionPane.showMessageDialog(null, "Operador agregado correctamente");
+            limpiar();
+        }        
     }//GEN-LAST:event_jButtonAgregarOperadorActionPerformed
 
     //Boton Volver
@@ -148,8 +182,187 @@ public class AgregarOperador extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
+    //Boton limpiar campos
+    private void jButtonLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarCamposActionPerformed
+
+        limpiar();
+    }//GEN-LAST:event_jButtonLimpiarCamposActionPerformed
+
+    //Metodo para verificar que no hayan dos usuarios con el mismo nombre
+    private boolean verificarNombreUsuario() {
+        
+        try {
+            
+            String user = jTextFieldUsuario.getText().trim();
+            
+            Frames.leerTxtAdmin();
+            Frames.leerTxtOperador();
+            
+            //Recorremos todos los operadores en busca del mismo nombre de usuario
+            for (int i = 0; i < Frames.LIST_OPERADOR.size(); i++) {
+                
+                if(user.equals(Frames.LIST_OPERADOR.get(i).getUsuario())) {
+                    JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe");
+                    return false;
+                }                
+            }
+            
+            //Recorremos todos los administradores en busca del mismo nombre de usuario
+            for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+                
+                if(user.equals(Frames.LIST_ADMIN.get(i).getUsuario())) {
+                    JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
+                    return false;
+                }
+            }
+            
+            return true;
+            
+        } catch (HeadlessException e) {
+         
+            JOptionPane.showMessageDialog(null, "Error comprobando usuarios,\ncontacte con un administrador");
+            return false;
+        }        
+    }
+    
+    //Metodo para Verificar que todos los datos sean correctos
+    private boolean verificarDatos() {
+
+        try {
+
+            //Verificacion de que hayan los caracteres necesarios
+            if(jTextFieldNombre.getText().trim().length() < 4) {
+                
+                JOptionPane.showMessageDialog(null, "El nombre minimo debe tener 4 caracteres");
+                return false;
+                
+            } else if(jTextFieldUsuario.getText().trim().length() < 6) {
+                
+                JOptionPane.showMessageDialog(null, "El nombre de usuario debe tener minimo\n6 caracteres");
+                return false;
+                
+            } else if(jTextFieldTelefono.getText().trim().length() < 10 && 
+                    jTextFieldTelefono.getText().trim().length() > 10) {
+                
+                JOptionPane.showMessageDialog(null, "El numero de telefono no es correcto");
+                return false;
+                
+            } else if(jTextFieldPassword.getText().trim().length() < 6) {
+                
+                JOptionPane.showMessageDialog(null, "La contraseña debe tener minimo\n6 caracteres");
+                return false;                
+            }
+                        
+            /*
+                Si no son numeros lo que se ingreso salta la exepcion y devuelve false
+                Se usa Long y no Int porque el maximo de int es 2,147,483,647 y los numeros de celular
+                tienen 10 digitos y suelen comenzar por 3, para evitar errores usamos Long
+            */
+            long cedula = Long.parseLong(jTextFieldCedula.getText().trim());
+            long telefono = Long.parseLong(jTextFieldTelefono.getText().trim());
+            
+            //Variables que llevaran el conteo de cuantos "@" y "." se consiguen en el correo
+            int punto = 0;
+            int arroba = 0;
+            
+            //Aca se recorre todo el correo en busca de los "@" y los "."
+            for (int i = 0; i < jTextFieldCorreo.getText().trim().length(); i++) {
+
+                if (jTextFieldCorreo.getText().trim().charAt(i) == '.') {
+                    punto++;
+                }
+
+                if (jTextFieldCorreo.getText().trim().charAt(i) == '@') {
+                    arroba++;
+                }
+            }
+
+            //Verificacion de que no hayan mas de 1 o 0 "@´s" y ".´s" en el correo
+            if (punto > 1 || punto == 0) {
+
+                JOptionPane.showMessageDialog(null, "Correo no valido, verifique su correo");
+                return false;
+
+            } else if (arroba > 1 || punto == 0) {
+
+                JOptionPane.showMessageDialog(null, "Correo no valido, verifique su correo");
+                return false;
+            }
+
+            //Verificacion de que la contraseña sea igual en ambos campos
+            if (!jTextFieldPassword.getText().trim().equals(jTextFieldConfirmPassword.getText().trim())) {
+
+                JOptionPane.showMessageDialog(null, "La contraseña no coincide\nvuelva a intentar");
+                return false;
+            }
+
+        } catch (HeadlessException e) {
+            
+            JOptionPane.showMessageDialog(null, "Algunos Campos son incorrectos\nverifica los datos y vuelve a intentar");
+            return false;
+            
+        } catch (NumberFormatException e) {
+            
+            //Exepcion en caso de que no sean numeros la cedula y el telefono
+            JOptionPane.showMessageDialog(null, "La cedula o telefono no son correctos");
+            return false;            
+        }
+
+        //Si todo esta bien devuelve true
+        return true;
+    }
+
+    //Metodo para Verificar campos vacios
+    private boolean verificarCamposVacios() {
+
+        if (jTextFieldNombre.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldCedula.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldTelefono.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldCorreo.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldUsuario.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldPassword.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldConfirmPassword.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else {
+
+            return true;
+        }
+    }
+
+    //Metodo para Limpiar todos los campos
+    private void limpiar() {
+        jTextFieldNombre.setText("");
+        jTextFieldCedula.setText("");
+        jTextFieldTelefono.setText("");
+        jTextFieldCorreo.setText("");
+        jTextFieldUsuario.setText("");
+        jTextFieldPassword.setText("");
+        jTextFieldConfirmPassword.setText("");
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAgregarOperador;
+    private javax.swing.JButton jButtonLimpiarCampos;
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabelAgregarOperador;
     private javax.swing.JLabel jLabelCedula;

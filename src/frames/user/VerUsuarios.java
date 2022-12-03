@@ -1,6 +1,9 @@
 package frames.user;
 
 import clases.Frames;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -8,12 +11,30 @@ import clases.Frames;
  */
 public class VerUsuarios extends javax.swing.JFrame {
 
+    //Modelo del JTable
+    private static DefaultTableModel modelo = new DefaultTableModel(){
+        
+        //Aca sobreescribimos el metodo isCellEditable para que ninguna columna ni fila sea editable
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }    
+    };
+    
     //Constructor
     public VerUsuarios() {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null); 
         setTitle("Ver Usuarios Registrados");
+        
+        VerUsuarios.modelo.addColumn("ID");
+        VerUsuarios.modelo.addColumn("Usuario");
+        VerUsuarios.modelo.addColumn("Cedula");
+        VerUsuarios.modelo.addColumn("Telefono");
+        VerUsuarios.modelo.addColumn("Correo");        
+        
+        VerUsuarios.jTableUsuario.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -64,7 +85,7 @@ public class VerUsuarios extends javax.swing.JFrame {
         ));
         jScrollPane.setViewportView(jTableUsuario);
 
-        jPanelFondo.add(jScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 70, -1, 300));
+        jPanelFondo.add(jScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 70, 540, 300));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -84,15 +105,58 @@ public class VerUsuarios extends javax.swing.JFrame {
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
 
         this.setVisible(false);
-        Frames.verFrame(Frames.GESTION_USUARIO);
-        
+        Frames.verFrame(Frames.GESTION_USUARIO);        
     }//GEN-LAST:event_jButtonVolverActionPerformed
+    
+    //Metodo para llenar el JTable
+    public static void llenarTable() {
+        
+        limpiarTable();        
+        Frames.leerTxtUsuario();
+        
+        ArrayList<String []> listTable = new ArrayList<>();
+        
+        //Llenamos el ArrayList temporal que llenara el JTable
+        for (int i = 0; i < Frames.LIST_USUARIO.size(); i++) {
+            
+            String aux [] = new String[] {String.valueOf(Frames.LIST_USUARIO.get(i).getSerial()), 
+                    Frames.LIST_USUARIO.get(i).getNombre(), 
+                    Frames.LIST_USUARIO.get(i).getCedula(), 
+                    Frames.LIST_USUARIO.get(i).getTelefono(), 
+                    Frames.LIST_USUARIO.get(i).getCorreoElectronico()};                    
+
+            listTable.add(aux);
+        }
+        
+        //Llenamos el JTable
+        for (int i = 0; i < listTable.size(); i++) {
+            
+            VerUsuarios.modelo.addRow(listTable.get(i));            
+        }        
+    }
+    
+    //Metodo para limpiar las filas del JTable
+    public static void limpiarTable() {
+        
+        try {
+            
+            int filas = jTableUsuario.getRowCount();
+            
+            for (int i = 0;filas>i; i++) {
+                VerUsuarios.modelo.removeRow(0);
+            }
+            
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
+        }
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabelTitulo;
     private javax.swing.JPanel jPanelFondo;
     private javax.swing.JScrollPane jScrollPane;
-    private javax.swing.JTable jTableUsuario;
+    private static javax.swing.JTable jTableUsuario;
     // End of variables declaration//GEN-END:variables
 }

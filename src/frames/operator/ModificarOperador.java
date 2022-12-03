@@ -1,6 +1,9 @@
 package frames.operator;
 
 import clases.Frames;
+import java.awt.HeadlessException;
+import java.io.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,7 +15,7 @@ public class ModificarOperador extends javax.swing.JFrame {
     public ModificarOperador() {
         initComponents();
         setResizable(false);
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
         setTitle("Modificar Operador");
     }
 
@@ -34,6 +37,7 @@ public class ModificarOperador extends javax.swing.JFrame {
         jButtonModificarOperador = new javax.swing.JButton();
         jButtonVolver = new javax.swing.JButton();
         jButtonBorrarOperador = new javax.swing.JButton();
+        jButtonLimpiarCampos = new javax.swing.JButton();
         jComboBoxSeleccionarOperador = new javax.swing.JComboBox<>();
         jTextFieldNombre = new javax.swing.JTextField();
         jTextFieldCedula = new javax.swing.JTextField();
@@ -133,6 +137,17 @@ public class ModificarOperador extends javax.swing.JFrame {
         });
         jPanelFondo.add(jButtonBorrarOperador, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 240, 140, 50));
 
+        jButtonLimpiarCampos.setBackground(new java.awt.Color(102, 102, 102));
+        jButtonLimpiarCampos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonLimpiarCampos.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonLimpiarCampos.setText("Limpiar Campos");
+        jButtonLimpiarCampos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLimpiarCamposActionPerformed(evt);
+            }
+        });
+        jPanelFondo.add(jButtonLimpiarCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, -1, -1));
+
         jPanelFondo.add(jComboBoxSeleccionarOperador, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 180, -1));
         jPanelFondo.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 180, -1));
         jPanelFondo.add(jTextFieldCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 180, -1));
@@ -156,9 +171,52 @@ public class ModificarOperador extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Boton agregar operador
+    //Boton modificar operador
     private void jButtonModificarOperadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarOperadorActionPerformed
 
+        try {
+
+            if (verificarCamposVacios() && verificarDatos() && verificarNombreUsuario()) {
+
+                if (!ModificarOperador.jComboBoxSeleccionarOperador.getSelectedItem().equals("")) {
+
+                    String itemSeleccionado = (String) ModificarOperador.jComboBoxSeleccionarOperador.getSelectedItem();
+
+                    //Aca obtenemos el ID del Operador
+                    itemSeleccionado = itemSeleccionado.substring(3, 7);
+
+                    int indice = -1;
+
+                    for (int i = 0; i < Frames.LIST_OPERADOR.size(); i++) {
+
+                        if (Frames.LIST_OPERADOR.get(i).getSerial() == Integer.parseInt(itemSeleccionado)) {
+                            indice = i;
+                            break;
+                        }
+                    }
+
+                    Frames.LIST_OPERADOR.get(indice).setNombre(jTextFieldNombre.getText().trim());
+                    Frames.LIST_OPERADOR.get(indice).setCedula(jTextFieldCedula.getText().trim());
+                    Frames.LIST_OPERADOR.get(indice).setTelefono(jTextFieldTelefono.getText().trim());
+                    Frames.LIST_OPERADOR.get(indice).setCorreoElectronico(jTextFieldCorreo.getText().trim());
+                    Frames.LIST_OPERADOR.get(indice).setUsuario(jTextFieldUsuario.getText().trim());
+                    Frames.LIST_OPERADOR.get(indice).setPassword(jTextFieldPassword.getText().trim());
+
+                    Frames.escribirTxt(Frames.LIST_OPERADOR, "src/bin/oper_data.txt");
+
+                    JOptionPane.showMessageDialog(null, "Operador modificado correctamente");
+                    llenarComboBox();
+                    limpiar();
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "No hay ningun operador seleccionado");
+                }
+            }
+
+        } catch (HeadlessException | NumberFormatException | NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "No hay operadores");
+        }
     }//GEN-LAST:event_jButtonModificarOperadorActionPerformed
 
     //Boton Volver
@@ -166,19 +224,290 @@ public class ModificarOperador extends javax.swing.JFrame {
 
         this.setVisible(false);
         Frames.verFrame(Frames.GESTION_OPERADOR);
-        
+
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     //Boton borrar operador
     private void jButtonBorrarOperadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarOperadorActionPerformed
-        
+
+        int opt = JOptionPane.showConfirmDialog(null, "¿Realmente desea borrar el Operador?\nEsta accion no es reversible",
+                "Confirmar accion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        try {
+
+            if (opt == 0) {
+
+                if (!ModificarOperador.jComboBoxSeleccionarOperador.getSelectedItem().equals("")) {
+
+                    String itemSeleccionado = (String) ModificarOperador.jComboBoxSeleccionarOperador.getSelectedItem();
+
+                    //Aca obtenemos el ID del Operador
+                    int ID = Integer.parseInt(itemSeleccionado.substring(3, 7));
+
+                    int indice = -1;
+
+                    for (int i = 0; i < Frames.LIST_OPERADOR.size(); i++) {
+
+                        if (Frames.LIST_OPERADOR.get(i).getSerial() == ID) {
+                            indice = i;
+                            break;
+                        }
+                    }
+
+                    Frames.LIST_OPERADOR.remove(indice);
+
+                    Frames.escribirTxt(Frames.LIST_OPERADOR, "src/bin/oper_data.txt");
+
+                    JOptionPane.showMessageDialog(null, "Operador borrado correctamente");
+                    llenarComboBox();
+                    limpiar();
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "No hay ningun operador seleccionado");
+                }
+            }
+
+        } catch (HeadlessException | NumberFormatException | NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "No hay operadores");
+        }
     }//GEN-LAST:event_jButtonBorrarOperadorActionPerformed
-    
+
+    //Boton limpiar campos
+    private void jButtonLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarCamposActionPerformed
+
+        limpiar();
+    }//GEN-LAST:event_jButtonLimpiarCamposActionPerformed
+
+    //Metodo para llenar el jComboBox
+    public static void llenarComboBox() {
+
+        //Vacia el ComboBox para que no se dupliquen registros
+        ModificarOperador.jComboBoxSeleccionarOperador.removeAllItems();
+
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader("src/bin/oper_data.txt"));
+
+            //Verificacion de que el txt no este vacio, en caso que este vacio, no hara nada
+            if (br.readLine() == null) {
+
+            } else {
+
+                //Leemos el archivo para poder obtener todos los cambios
+                Frames.leerTxtOperador();
+            }
+
+        } catch (IOException e) {
+
+            JOptionPane.showConfirmDialog(null, "Error llenando datos");
+        }
+
+        //Llenamos el ComboBox
+        for (int i = 0; i < Frames.LIST_OPERADOR.size(); i++) {
+
+            ModificarOperador.jComboBoxSeleccionarOperador.addItem("ID:"
+                    + Frames.LIST_OPERADOR.get(i).getSerial()
+                    + ",Usuario:" + Frames.LIST_OPERADOR.get(i).getUsuario());
+        }
+    }
+
+    //Metodo para verificar que no hayan dos usuarios con el mismo nombre
+    private boolean verificarNombreUsuario() {
+
+        try {
+
+            String itemSeleccionado = (String) ModificarOperador.jComboBoxSeleccionarOperador.getSelectedItem();
+
+            String user = jTextFieldUsuario.getText().trim();
+
+            //Obtencion del Usuario actual
+            String userActual = itemSeleccionado.substring(16, itemSeleccionado.length());
+
+            Frames.leerTxtAdmin();
+            Frames.leerTxtOperador();
+
+            //Recorremos todos los operadores en busca del mismo nombre de usuario
+            for (int i = 0; i < Frames.LIST_OPERADOR.size(); i++) {
+
+                if (user.equals(Frames.LIST_OPERADOR.get(i).getUsuario())) {
+
+                    //Verificacion para ver si el nombre de usuario es el mismo que ya tiene actual el administrador
+                    if (user.equals(userActual)) {
+                        break;
+                    } else {
+
+                        JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
+                        return false;
+                    }
+                }
+            }
+
+            //Recorremos todos los administradores en busca del mismo nombre de usuario
+            for (int i = 0; i < Frames.LIST_ADMIN.size(); i++) {
+
+                if (user.equals(Frames.LIST_ADMIN.get(i).getUsuario())) {
+
+                    //Verificacion para ver si el nombre de usuario es el mismo que ya tiene actual el administrador
+                    if (user.equals(userActual)) {
+                        break;
+                    } else {
+
+                        JOptionPane.showMessageDialog(null, "El nombre de Usuario ya existe");
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+
+        } catch (HeadlessException e) {
+
+            JOptionPane.showMessageDialog(null, "Error comprobando usuarios,\ncontacte con un administrador");
+            return false;
+        }
+    }
+
+    //Metodo para Verificar que todos los datos sean correctos
+    private boolean verificarDatos() {
+
+        try {
+
+            //Verificacion de que hayan los caracteres necesarios
+            if (jTextFieldNombre.getText().trim().length() < 4) {
+
+                JOptionPane.showMessageDialog(null, "El nombre minimo debe tener 4 caracteres");
+                return false;
+
+            } else if (jTextFieldUsuario.getText().trim().length() < 6) {
+
+                JOptionPane.showMessageDialog(null, "El nombre de usuario debe tener minimo\n6 caracteres");
+                return false;
+
+            } else if (jTextFieldTelefono.getText().trim().length() < 10
+                    && jTextFieldTelefono.getText().trim().length() > 10) {
+
+                JOptionPane.showMessageDialog(null, "El numero de telefono no es correcto");
+                return false;
+
+            } else if (jTextFieldPassword.getText().trim().length() < 6) {
+
+                JOptionPane.showMessageDialog(null, "La contraseña debe tener minimo\n6 caracteres");
+                return false;
+            }
+
+            /*
+                Si no son numeros lo que se ingreso salta la exepcion y devuelve false
+                Se usa Long y no Int porque el maximo de int es 2,147,483,647 y los numeros de celular
+                tienen 10 digitos y suelen comenzar por 3, para evitar errores usamos Long
+             */
+            long cedula = Long.parseLong(jTextFieldCedula.getText().trim());
+            long telefono = Long.parseLong(jTextFieldTelefono.getText().trim());
+
+            //Variables que llevaran el conteo de cuantos "@" y "." se consiguen en el correo
+            int punto = 0;
+            int arroba = 0;
+
+            //Aca se recorre todo el correo en busca de los "@" y los "."
+            for (int i = 0; i < jTextFieldCorreo.getText().trim().length(); i++) {
+
+                if (jTextFieldCorreo.getText().trim().charAt(i) == '.') {
+                    punto++;
+                }
+
+                if (jTextFieldCorreo.getText().trim().charAt(i) == '@') {
+                    arroba++;
+                }
+            }
+
+            //Verificacion de que no hayan mas de 1 o 0 "@´s" y ".´s" en el correo
+            if (punto > 1 || punto == 0) {
+
+                JOptionPane.showMessageDialog(null, "Correo no valido, verifique su correo");
+                return false;
+
+            } else if (arroba > 1 || punto == 0) {
+
+                JOptionPane.showMessageDialog(null, "Correo no valido, verifique su correo");
+                return false;
+            }
+
+            //Verificacion de que la contraseña sea igual en ambos campos
+            if (!jTextFieldPassword.getText().trim().equals(jTextFieldConfirmPassword.getText().trim())) {
+
+                JOptionPane.showMessageDialog(null, "La contraseña no coincide\nvuelva a intentar");
+                return false;
+            }
+
+        } catch (HeadlessException e) {
+
+            JOptionPane.showMessageDialog(null, "Algunos Campos son incorrectos\nverifica los datos y vuelve a intentar");
+            return false;
+
+        } catch (NumberFormatException e) {
+
+            //Exepcion en caso de que no sean numeros la cedula y el telefono
+            JOptionPane.showMessageDialog(null, "La cedula o telefono no son correctos");
+            return false;
+        }
+
+        //Si todo esta bien devuelve true
+        return true;
+    }
+
+    //Metodo para Verificar campos vacios
+    private boolean verificarCamposVacios() {
+
+        if (jTextFieldNombre.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldCedula.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldTelefono.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldCorreo.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldUsuario.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldPassword.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else if (jTextFieldConfirmPassword.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            return false;
+
+        } else {
+            return true;
+        }
+    }
+
+    //Metodo para Limpiar todos los campos
+    private void limpiar() {
+        jTextFieldNombre.setText("");
+        jTextFieldCedula.setText("");
+        jTextFieldTelefono.setText("");
+        jTextFieldCorreo.setText("");
+        jTextFieldUsuario.setText("");
+        jTextFieldPassword.setText("");
+        jTextFieldConfirmPassword.setText("");
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBorrarOperador;
+    private javax.swing.JButton jButtonLimpiarCampos;
     private javax.swing.JButton jButtonModificarOperador;
     private javax.swing.JButton jButtonVolver;
-    private javax.swing.JComboBox<String> jComboBoxSeleccionarOperador;
+    private static javax.swing.JComboBox<String> jComboBoxSeleccionarOperador;
     private javax.swing.JLabel jLabelCedula;
     private javax.swing.JLabel jLabelConfirmPassword;
     private javax.swing.JLabel jLabelCorreo;
